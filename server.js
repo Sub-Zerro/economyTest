@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 let path = require('path');
 let gg = false;
+const PORT = process.env.PORT || 3000;
 // const jsdom = require("jsdom");
 // const { JSDOM } = jsdom;
 // global.document = new JSDOM("http://localhost:3000/").window.document;
@@ -333,4 +334,4 @@ app.post("/", urlencodedParser, function (request, response) {
 
 
 
-app.listen(3000, ()=>console.log("Сервер запущен..."));
+app.listen(PORT, ()=>console.log("Сервер запущен..."));
