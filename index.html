@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тест по экономике</title>
+    <style>
+        html{
+            height: 100%;
+            width: 100%;
+        }
+        body{
+            height: 100%;
+            width: 100%;
+        }
+        .circle{
+            width: 100%;
+            height: 10%;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            background-color: #ff7654;
+        }
+        .textBlock{
+            height: 50%;
+            width: 100%;
+            flex-direction: column;
+            position: relative;
+            background-color: white;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 350%;
+            display: flex;
+        }
+
+        .block:first-child{
+            margin-top: 60%;
+        }
+
+        .block{
+            display: flex;
+            flex-direction: column;
+            /*top: 100%;*/
+            margin-left: 20%;
+
+        }
+        button{
+            border: 0;
+            border-radius: 10px;
+            background: #6477EB;
+            color: #fff;
+            padding: 10px 25px;
+            width: 60%;
+            height: 6%;
+            /*font-size: 15pt;*/
+            /*display: block;*/
+            cursor: pointer;
+            margin-top: 7%;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 200%;
+        }
+    </style>
+</head>
+<body>
+<label id="aPlace">Фамилия, имя</label><br>
+<form method="post">
+
+    <input type="text" name="answ"/><br><br>
+    <input type="submit" value="Отправить" />
+</form>
+<!--<script>-->
+<!--    function addElements(){-->
+
+<!--        // function getRandomIntInclusive(min, max) {-->
+<!--        //   min = Math.ceil(min);-->
+<!--        //   max = Math.floor(max);-->
+<!--        //   palitra = Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются-->
+<!--        // }-->
+<!--        let body = document.querySelector('body');-->
+<!--        // let answer = document.getElementById('aPlace');-->
+<!--        // answer.innerHTML = "Ответ на вопрос(порядковый номер ответа)";-->
+
+<!--        //let colors = [["red","green","white"], ["#591D45", "#9E2A7E", "#EE8727"], ["#353030", "#FFE600", "#1947EA"]];-->
+<!--        //let palitra;-->
+<!--        //getRandomIntInclusive(0,2);-->
+<!--        //console.log(palitra);-->
+
+<!--        //let place = document.createElement('div');-->
+<!--        //place.className = "place";-->
+<!--        //place.style.background = colors[palitra][1];-->
+<!--        //body.appendChild(place);-->
+
+<!--        //document.body.style.background = colors[palitra][0];-->
+
+
+<!--        let textBlock = document.createElement('div');-->
+<!--        textBlock.className = "textBlock";-->
+<!--        //block.style.background = colors[palitra][2];-->
+<!--        body.appendChild(textBlock);-->
+
+<!--        let circle = document.createElement('div');-->
+<!--        circle.className = "circle";-->
+<!--        //block.style.background = colors[palitra][2];-->
+<!--        body.appendChild(circle);-->
+
+
+
+<!--        let block1 = document.createElement('button');-->
+<!--        block1.className = "block";-->
+<!--        //block1.style.background = colors[palitra][2];-->
+<!--        body.appendChild(block1);-->
+<!--        let block2 = document.createElement('button');-->
+<!--        block2.className = "block";-->
+<!--        //block2.style.background = colors[palitra][2];-->
+<!--        body.appendChild(block2);-->
+<!--        let block3 = document.createElement('button');-->
+<!--        block3.className = "block";-->
+<!--        //block3.style.background = colors[palitra][2];-->
+<!--        body.appendChild(block3);-->
+<!--        let block4 = document.createElement('button');-->
+<!--        block4.className = "block";-->
+<!--        //block4.style.background = colors[palitra][2];-->
+<!--        body.appendChild(block4);-->
+<!--    }-->
+<!--    addElements();-->
+<!--</script>-->
+<!--<script>-->
+
+<!--    // let exports.totalScope = 0;-->
+<!--    const obj = [-->
+<!--        ["Как переводится quantity of supply?", "Величина предложения", "Количество спроса", "Величина цены", "Количество величины спроса", 1],-->
+<!--        ["Как называется количество товара или услуги, которое покупатели готовы по данной цене?", "Quality of demand", "Средний спрос", "Количество спроса", "Quantity of demand", 4],-->
+<!--        ["Как называется зависимость между количеством товара или услуги, которое покупатели хотят и могут купить, и ценой на этот товар в определенное время в определенном месте?", "Demond", "Quantity of demond", "Спрос", "Количество предложения", 3],-->
+<!--        ["Выберите, как можно выразить функцию спроса из предложенных вариантов:", "Qd = Q (P)", "Pd = P (Q)","Qd = a/P", "Qd = 10 – 2p", 3]-->
+<!--    ]-->
+<!--        let textPlace = document.querySelector('.textBlock');-->
+<!--        console.log(textPlace);-->
+<!--        let block1 = document.querySelectorAll('.block')[0];-->
+<!--        console.log(block1);-->
+<!--        let block2 = document.querySelectorAll('.block')[1];-->
+<!--        let block3 = document.querySelectorAll('.block')[2];-->
+<!--        let block4 = document.querySelectorAll('.block')[3];-->
+<!--        console.log(block1);-->
+<!--        let arr = [block1, block2, block3, block4];-->
+<!--        textPlace.textContent = obj[0][0];-->
+<!--        for(let i = 0; i<arr.length; i++) {-->
+<!--            arr[i].textContent = `${[i + 1]}. ${obj[0][i + 1]}`;-->
+<!--        }-->
+<!--        let rightAnswer = obj[0][5];-->
+<!--        console.log(rightAnswer);-->
+
+
+<!--    //console.log("Рома пупс");-->
+<!--</script>-->
+<!--<script type="text/javascript" src="script.js"></script>-->
+</body>
+</html>
