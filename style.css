@@ -1,0 +1,45 @@
+/*input{*/
+    /*  width: 40%;*/
+    /*  height: 200px;*/
+    /*  text-align: center;*/
+    /*  justify-content: center;*/
+    /*  align-items: center;*/
+    /*  font-size: 200%;*/
+    /*}*/
+    form{
+        align-items: center;
+        flex-direction: column;
+        display: flex;
+        border-radius: 10px;
+    }
+    h1{
+        align-items: center;
+        /*position: center;*/
+        display: flex;
+        justify-content: center;
+        font-size: 400%;
+
+    }
+    input{
+        font-size: 250%;
+    }
+    label{
+        font-size: 250%;
+        border-radius: 100px;
+    }
+    button{
+        font-size: 200%;
+        margin-left: 42%;
+        border-radius: 10px;
+        background-color: chocolate;
+    }
+    input {
+        border-radius: 10px;
+        background-color: aquamarine;
+    }
+    a {
+        background-color: chocolate;
+    }
+    *{
+        background-color: cadetblue;
+    }
