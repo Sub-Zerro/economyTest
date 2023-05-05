@@ -53,11 +53,10 @@ app.post("/", urlencodedParser, function (request, response) {
 
 
     pool.query(`
-            INSERT INTO results(name, numberofq, answer)values('${request.body.name}', '${request.body.numberOfQ}', '${request.body.answer}')
+            INSERT INTO results(name, answer)values('${request.body.name}', '${request.body.numberOfQ}')
 
     `, (err, res) => {
         console.log(err, res);
-        pool.end();
     })
 });
 
