@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание нового теста</title>
+</head>
+<body>
+    <h1>Создание нового теста. Заполните поля, если есть лишний ответ - просто оставьте его пустым</h1>
+
+
+    <h2>Вопрос</h2>
+    <input type="text">
+    <h2>Вариант ответа 1</h2>
+    <input type="text">
+    <h2>Вариант ответа 2</h2>
+    <input type="text">
+    <h2>Вариант ответа 3</h2>
+    <input type="text">
+    <h2>Вариант ответа 4</h2>
+    <input type="text">
+    <h2>Вариант ответа 5</h2>
+    <input type="text">
+    <h2>Порядковый номер правильного ответа</h2>
+    <input type="text">
+
+    <button class="add">Добавить вопрос</button>
+    <button class="end">Закончить и отправить</button>
+
+    <script>
+        let inputs = document.querySelectorAll('input');
+        let btn = document.querySelector('.add');
+        let end_btn = document.querySelector('.end');
+        let right_str = '';
+        let arr = [];
+
+
+        btn.addEventListener('click', ()=>{
+            arr.push([
+                inputs[0].value,
+                inputs[1].value,
+                inputs[2].value,
+                inputs[3].value,
+                inputs[4].value,
+                inputs[5].value
+            ]);
+            right_str += `${inputs[6].value}`;
+
+            add_div(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value, inputs[5].value);
+
+            console.log(arr);
+            console.log(right_str);
+        })
+
+        end_btn.addEventListener('click', ()=>{
+            send_to_server(arr, right_str);
+        })
+
+
+
+
+
+
+        function add_div(q, o1, o2, o3, o4, o5){
+            let arr = [q, o1, o2, o3, o4, o5];
+            let div = document.createElement('ul');
+            //div.className = `${num}`;
+            document.body.appendChild(div);
+
+            //let new_div = document.querySelector(`.${num}`);
+            let newlistItem;
+            for(let i = 0; i < 5; i++){
+                newlistItem = document.createElement('li');
+                newlistItem.textContent = arr[i];
+                div.appendChild(newlistItem);
+            }
+        }
+
+        function send_to_server(arr, str){
+            fetch("/create", {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                //make sure to serialize your JSON body
+                body: JSON.stringify({
+                    arr: arr,
+                    str: str
+                })
+            }).then((res)=>{
+                console.log(res);
+            })
+        }
+
+    </script>
+
+</body>
+</html>

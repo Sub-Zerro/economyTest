@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+</head>
+<body>
+    <input class="login" type="text">
+    <input class="pass" type="text">
+    <button class="check">войти</button>
+
+    <script>
+        let login_input = document.querySelector('.login');
+        let pass_input = document.querySelector('.pass');
+
+        let btn = document.querySelector('.check');
+        let token = '1334&35634b!314vSAF1';
+
+        btn.addEventListener('click', ()=>{
+            if (login_input.value!='' && pass_input.value!=''){
+                check_bd(login_input.value, pass_input.value);
+                console.log('post');
+            }else{
+                alert("Вы не ввели данные");
+            }
+        })
+
+        function check_bd(login, pass){
+            fetch("/login", {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                //make sure to serialize your JSON body
+                body: JSON.stringify({
+                    name: login,
+                    password: pass
+                })
+            })
+            .then((res)=>{
+                if (res.status==200){
+                    console.log("DA!!!!!!!!!!!!!!!!");
+                    window.location.replace("/create");
+                }
+            })
+            .catch((err)=>{
+                if (err){
+                    console.error(err);
+                }
+            })
+        }
+
+    </script>
+</body>
+</html>
