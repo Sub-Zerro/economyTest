@@ -93,6 +93,44 @@ app.post("/create", function (req, res) {
     console.log(arr);
     console.log(str);
 
+    
+    (async ()=>{
+        await set_new_quiz(arr, str);
+
+        const query = `select num_quiz from right_strs`;
+
+        let last_num;
+
+        await pool.query(query)
+            .then(res => {
+                const rows = res.rows;
+
+                rows.map(row => {
+                    console.log(`Read: ${JSON.stringify(row)}`);
+                });
+
+                let res_l = (res.rows.length)-1;
+
+                for (let i = 0; i < res.rows.length; i++) {
+                    if (i == res_l) {
+                        last_num = res.rows[i]["num_quiz"];
+                    }
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        console.log('ВЫВОЖУ!!!!');
+        console.log(last_num);
+
+        //res.send(`${last_num}`);
+        res.send({otv: last_num});
+    })()
+
+
+
+
+
 
 })
 
@@ -170,8 +208,71 @@ async function queryDatabase() {
 }
 
 
-function set_new_quiz(){
+function set_new_quiz(arr, str){
 
+    let last_num;
+
+    let p = new Promise(function (resolve, reject){
+        const query = `select num_quiz from right_strs`;
+        pool.query(query)
+            .then(res => {
+                const rows = res.rows;
+
+                rows.map(row => {
+                    console.log(`Read: ${JSON.stringify(row)}`);
+                });
+
+                let res_l = (res.rows.length)-1;
+
+                for (let i = 0; i < res.rows.length; i++){
+                    if (i == res_l){
+                        last_num = res.rows[i]["num_quiz"];
+                    }
+                }
+                resolve(last_num);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }).then((last_num)=>{
+        //console.log(last_num);
+        return new Promise(function (resolve, reject) {
+            let now_num_quiz = last_num+1;
+
+            for (let i = 0; i < arr.length; i++){
+                pool.query(`
+            INSERT INTO questions(num_quiz, num_question, question, ans1, ans2, ans3, ans4, ans5)values('${now_num_quiz}', '${i+1}', '${arr[i][0]}', '${arr[i][1]}', '${arr[i][2]}', '${arr[i][3]}', '${arr[i][4]}', '${arr[i][5]}');
+            `, (err, res) => {
+                    console.log(err, res);
+                    //pool.end();
+                })
+            }
+
+            resolve(now_num_quiz);
+        })
+    }).then((now_num_quiz)=>{
+        return new Promise(function (resolve, reject) {
+            pool.query(`
+            INSERT INTO right_strs(num_quiz, str)values('${now_num_quiz}', '${str}');
+            `, (err, res) => {
+                console.log(err, res);
+            })
+            resolve(now_num_quiz);
+        })
+    }).then((now_num_quiz)=>{
+        return now_num_quiz;
+    })
+}
+
+
+function get_last_num_quiz(){
+    let last_num;
+
+    new Promise(function (resolve, reject) {
+
+    }).then(()=>{
+        return last_num;
+    })
 }
 
 
