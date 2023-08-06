@@ -20,8 +20,7 @@ const pool = new Pool({
 pool.connect();
 
 let arr = [];
-const ransw = '143422312222322441';
-const ranswArr = ['1', '4', '3', '4', '2', '2', '3', '1', '2', '2', '2', '2', '3', '2', '2', '4', '4', '1'];
+const ranswArr = ['1', '4', '3', '4', '2', '2', '3', '1', '2', '2', '2', '2', '2', '2', '4', '4', '1'];
 
 let users = {
     us1:{
@@ -51,7 +50,7 @@ app.get('/pups227', function (req, res){
         await queryDatabase();
         await res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
         for (let i = 0; i<arr.length; i++){
-            res.write(`<div>${arr[i][0]} - ${arr[i][3]} баллов из 18, ${100*arr[i][3]/18} % </div>`);
+            res.write(`<div>${arr[i][0]} - ${arr[i][3]} баллов из 17, ${100*arr[i][3]/18} % </div>`);
         }
     })()
 })
@@ -94,7 +93,7 @@ app.post("/create", function (req, res) {
     console.log(arr);
     console.log(str);
 
-    res.send("Пошла нафиг!");
+
 })
 
 
@@ -168,8 +167,10 @@ async function queryDatabase() {
             arr[i].push(counter)
         }
         console.log(arr)
+}
 
 
+function set_new_quiz(){
 
 }
 
