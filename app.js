@@ -19,8 +19,8 @@ const pool = new Pool({
 })
 pool.connect();
 
-let arr = [];
-const ranswArr = ['1', '4', '3', '4', '2', '2', '3', '1', '2', '2', '2', '2', '2', '2', '4', '4', '1'];
+// let arr = [];
+// const ranswArr = ['1', '4', '3', '4', '2', '2', '3', '1', '2', '2', '2', '2', '2', '2', '4', '4', '1'];
 
 let users = {
     us1:{
@@ -67,12 +67,20 @@ app.get("/create", function (req, res){
     myReadStream.pipe(res);
 })
 
+app.get("/answers", function (req, res){
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    var myReadStream = fs.createReadStream(path.join(__dirname, '/htmls', 'answers.html'), 'utf8');
+    myReadStream.pipe(res);
+})
+
+
+
 
 
 
 
 app.post('/', function (req, res) {
-    post_to_base(req.body.name, req.body.answer)
+    post_to_base(req.body.name, req.body.answer, req.body.num_quiz)
 })
 
 app.post("/login", function (req, res) {
@@ -126,12 +134,62 @@ app.post("/create", function (req, res) {
         //res.send(`${last_num}`);
         res.send({otv: last_num});
     })()
+})
 
+app.post("/do", function (req, res){
+    let obj = {
+        arr: [],
+        str: '',
+        num_quiz: req.body.num
+    };
+    let arr = [];
 
+    new Promise(function (resolve, reject) {
+        (async ()=>{
+            const query = `select * from questions where num_quiz=${req.body.num}`;
+            await pool.query(query)
+                .then(res => {
+                    const rows = res.rows;
 
+                    rows.map(row => {
+                        console.log(`Read: ${JSON.stringify(row)}`);
+                    });
 
+                    for(let i = 0; i < res.rows.length; i++){
+                        arr.push([res.rows[i]["question"], res.rows[i]["ans1"], res.rows[i]["ans2"], res.rows[i]["ans3"], res.rows[i]["ans4"]]);
+                    }
 
+                    obj.arr = arr;
+                })
+                .catch(err => {
+                    console.log(err);
+                });
 
+            const query2 = `select str from right_strs where num_quiz=${req.body.num}`;
+            await pool.query(query2)
+                .then(res => {
+                    const rows = res.rows;
+
+                    rows.map(row => {
+                        console.log(`Read: ${JSON.stringify(row)}`);
+                    });
+
+                    obj.str = res.rows[0]["str"];
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
+            //console.log(obj);
+            resolve();
+        })()
+    }).then(()=>{
+        res.send(obj);
+    })
+})
+
+app.post("/answers", function (req, res){
+    get_answers(res, req.body.num_quiz);
 })
 
 
@@ -145,13 +203,13 @@ app.listen(3000)
 
 
 //Функции
-function post_to_base(name, answer){
+function post_to_base(name, answer, num_quiz){
 
-    const query = `INSERT INTO results(name, answer)values('${name}', '${answer}');`;
+    const query = `INSERT INTO results(name, answer, num_quiz)values('${name}', '${answer}', '${num_quiz}');`;
 
 
     pool.query(`
-            INSERT INTO results(name, answer)values('${name}', '${answer}');
+            INSERT INTO results(name, answer, num_quiz)values('${name}', '${answer}', '${num_quiz}');
 
     `, (err, res) => {
         console.log(err, res);
@@ -162,9 +220,14 @@ function post_to_base(name, answer){
 
 
 
-async function queryDatabase() {
+async function queryDatabase(str_arr) {
+
+    console.log("THIS@@@@@@@@@@@@@@@");
+    console.log(str_arr);
 
     //console.log(`Running query to PostgreSQL server: ${pool.host}`);
+
+    let arr = [];
 
     const query = "select name,answer from results;";
 
@@ -196,15 +259,19 @@ async function queryDatabase() {
 
         for(let i = 0; i<arr.length; i++){
             let counter = 0;
+            console.log("arr[i] = ", arr[i]);
             for(let k = 0; k<arr[i][2].length; k++){
-                if (arr[i][2][k]==ranswArr[k]){
+                console.log("str_arr[i] = ", str_arr[k]);
+                if (arr[i][2][k]==str_arr[k]){
                     counter++;
+                    console.log("counter = ", counter);
                 }
 
             }
             arr[i].push(counter)
         }
         console.log(arr)
+        return arr;
 }
 
 
@@ -241,7 +308,7 @@ function set_new_quiz(arr, str){
 
             for (let i = 0; i < arr.length; i++){
                 pool.query(`
-            INSERT INTO questions(num_quiz, num_question, question, ans1, ans2, ans3, ans4, ans5)values('${now_num_quiz}', '${i+1}', '${arr[i][0]}', '${arr[i][1]}', '${arr[i][2]}', '${arr[i][3]}', '${arr[i][4]}', '${arr[i][5]}');
+            INSERT INTO questions(num_quiz, num_question, question, ans1, ans2, ans3, ans4)values('${now_num_quiz}', '${i+1}', '${arr[i][0]}', '${arr[i][1]}', '${arr[i][2]}', '${arr[i][3]}', '${arr[i][4]}');
             `, (err, res) => {
                     console.log(err, res);
                     //pool.end();
@@ -265,13 +332,81 @@ function set_new_quiz(arr, str){
 }
 
 
-function get_last_num_quiz(){
-    let last_num;
+function get_answers(res, num_quiz){
 
+    let arr = [];
+    let str = '';
+    let str_arr;
+    let end_arr;
+    
     new Promise(function (resolve, reject) {
+        const query = `select name, answer from results where num_quiz=${num_quiz}`;
+        pool.query(query)
+            .then(res => {
+                const rows = res.rows;
 
+                rows.map(row => {
+                    console.log(`Read: ${JSON.stringify(row)}`);
+                });
+
+                for (let i = 0; i<res.rows.length; i++){
+                    arr.push([res.rows[i]["name"], res.rows[i]["answer"]]);
+                }
+
+                //console.log(arr);
+                resolve();
+
+
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }).then(()=>{
-        return last_num;
+        return new Promise(function (resolve, reject) {
+            const query2 = `select str from right_strs where num_quiz=${num_quiz}`;
+            pool.query(query2)
+                .then(res => {
+                    const rows = res.rows;
+
+                    rows.map(row => {
+                        console.log(`Read: ${JSON.stringify(row)}`);
+                    });
+
+                    str = res.rows[0]["str"];
+
+
+                    str_arr = Array.from(str) ;
+
+                    console.log("THIS");
+                    console.log(str_arr);
+
+                    resolve();
+
+                    //console.log(str);
+
+
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        })
+    }).then(()=>{
+        return new Promise(function (resolve, reject) {
+            end_arr = queryDatabase(str_arr);
+            resolve(end_arr);
+        })
+    }).then((end_arr)=>{
+        // (async ()=>{
+        //     await res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+        //     for (let i = 0; i<arr.length; i++){
+        //         res.write(`<div>${end_arr[i][0]} - ${end_arr[i][3]} баллов из 17, ${100*end_arr[i][3]/18} % </div>`);
+        //     }
+        // })()
+
+        res.send({arr: end_arr});
+
+        //res.write("nsadfaaaaaaasfasfsadf");
+
     })
 }
 

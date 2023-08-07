@@ -18,8 +18,6 @@
     <input type="text">
     <h2>Вариант ответа 4</h2>
     <input type="text">
-    <h2>Вариант ответа 5</h2>
-    <input type="text">
     <h2>Порядковый номер правильного ответа</h2>
     <input type="text">
 
@@ -35,20 +33,27 @@
 
 
         btn.addEventListener('click', ()=>{
-            arr.push([
-                inputs[0].value,
-                inputs[1].value,
-                inputs[2].value,
-                inputs[3].value,
-                inputs[4].value,
-                inputs[5].value
-            ]);
-            right_str += `${inputs[6].value}`;
+            (async ()=>{
+                await arr.push([
+                    inputs[0].value,
+                    inputs[1].value,
+                    inputs[2].value,
+                    inputs[3].value,
+                    inputs[4].value,
+                    inputs[5].value
+                ]);
+                right_str += `${inputs[5].value}`;
 
-            add_div(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value, inputs[5].value);
+                await add_div(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value);
 
-            console.log(arr);
-            console.log(right_str);
+                console.log(arr);
+                console.log(right_str);
+
+                for(let i = 0; i < inputs.length; i++){
+                    inputs[i].value = '';
+                }
+            })()
+
         })
 
         end_btn.addEventListener('click', ()=>{
@@ -60,8 +65,8 @@
 
 
 
-        function add_div(q, o1, o2, o3, o4, o5){
-            let arr = [q, o1, o2, o3, o4, o5];
+        function add_div(q, o1, o2, o3, o4){
+            let arr = [q, o1, o2, o3, o4];
             let div = document.createElement('ul');
             //div.className = `${num}`;
             document.body.appendChild(div);

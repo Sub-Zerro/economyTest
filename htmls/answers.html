@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Таблица ответов</title>
+</head>
+<body>
+  <script>
+
+    (async ()=>{
+      let num_quiz_promot = await prompt("Введите номер квиза");
+
+      fetch("/answers", {
+        method: "post",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        //make sure to serialize your JSON body
+        body: JSON.stringify({
+          num_quiz: Number(num_quiz_promot)
+        })
+      }).then((res)=>{
+          res.json().then((end_res)=>{
+              for (let i = 0; i<end_res.arr.length; i++){
+                  document.write(`<div>${end_res.arr[i][0]} - ${end_res.arr[i][3]} баллов из ${end_res.arr[i][2].length}, ${100*end_res.arr[i][3]/18} % </div>`);
+              }
+          })
+      })
+    })()
+
+
+
+  </script>
+</body>
+</html>
