@@ -41,7 +41,7 @@ app.use(express.urlencoded());
 
 app.get('/', function(req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var myReadStream = fs.createReadStream(path.join(__dirname, '/htmls', 'index.html'), 'utf8');
+    var myReadStream = fs.createReadStream(path.join(__dirname, '/htmls', 'home.html'), 'utf8');
     myReadStream.pipe(res);
 });
 
@@ -72,6 +72,12 @@ app.get("/answers", function (req, res){
     var myReadStream = fs.createReadStream(path.join(__dirname, '/htmls', 'answers.html'), 'utf8');
     myReadStream.pipe(res);
 })
+
+app.get('/do', function(req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    var myReadStream = fs.createReadStream(path.join(__dirname, '/htmls', 'index.html'), 'utf8');
+    myReadStream.pipe(res);
+});
 
 
 

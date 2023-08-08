@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Домашняя страница</title>
+</head>
+<body>
+    <button class="quiz">Решать квиз по коду</button>
+    <button class="enter">Войти</button>
+
+    <script>
+        let quiz_btn = document.querySelector('.quiz');
+        let enter_btn = document.querySelector('.enter');
+
+        quiz_btn.addEventListener('click', ()=>{
+            window.location.replace("/do");
+        })
+
+        enter_btn.addEventListener('click', ()=>{
+            window.location.replace("/login");
+        })
+    </script>
+</body>
+</html>
