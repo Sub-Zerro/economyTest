@@ -25,11 +25,13 @@ pool.connect();
 let users = {
     us1:{
         name: '1',
-        pass: '1'
+        pass: '1',
+        user_name: 'test'
     },
     us2:{
         name: "economica",
-        pass: "2023"
+        pass: "2023",
+        user_name: 'Юлия Александровна'
     }
 }
 
@@ -76,6 +78,12 @@ app.get("/answers", function (req, res){
 app.get('/do', function(req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     var myReadStream = fs.createReadStream(path.join(__dirname, '/htmls', 'index.html'), 'utf8');
+    myReadStream.pipe(res);
+});
+
+app.get('/user', function(req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    var myReadStream = fs.createReadStream(path.join(__dirname, '/htmls', 'create_ans.html'), 'utf8');
     myReadStream.pipe(res);
 });
 
@@ -197,6 +205,7 @@ app.post("/do", function (req, res){
 app.post("/answers", function (req, res){
     get_answers(res, req.body.num_quiz);
 })
+
 
 
 

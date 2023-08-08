@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+</head>
+<body>
+<!--  <h1 class="name_h1"></h1>-->
+  <button class="create">Создать новый квиз</button>
+  <button class="answers">Посмотреть результаты квиза по коду</button>
+
+  <script>
+    let name_h1 = document.querySelector(".name_h1");
+
+    let create_btn = document.querySelector('.create');
+    let answers_btn = document.querySelector('.answers');
+
+    create_btn.addEventListener('click', ()=>{
+      window.location.replace("/create");
+    })
+
+    answers_btn.addEventListener('click', ()=>{
+      window.location.replace("/answers");
+    })
+
+  </script>
+</body>
+</html>
