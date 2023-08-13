@@ -6,42 +6,44 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet">
+<style>
+*{
+    background-color: #45075c;
+}
+body {
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+.quiz {
+    font-size: 100px;
+    margin-top: 50%;
+    background-color: #4762e5;
+    width: 80%;
+    height: 400px;
+    border-radius: 90px;
+    box-shadow: 20px 20px black;
+    font-family: 'Comfortaa';
+    font-weight: 100;
+}
+.enter {
+    font-size: 100px;
+    margin-top: 4%;
+    background-color: #299dcf;
+    width: 60%;
+    font-family: 'Comfortaa';
+    height: 400px;
+    border-radius: 90px;
+    box-shadow: 20px 20px black;
+
+}
+</style>
 </head>
 <body>
     <button class="quiz">Решать квиз по коду</button><br>
     <button class="enter">Войти</button>
-    <style>
-        *{
-            background-color: #45075c;
-        }
-        body {
-            justify-content: center;
-            text-align: center;
-            align-items: center;
-        }
-        .quiz {
-            font-size: 100px;
-            margin-top: 50%;
-            background-color: #4762e5;
-            width: 80%;
-            height: 400px;
-            border-radius: 90px;
-            box-shadow: 20px 20px black;
-            font-family: 'Comfortaa';
-            font-weight: 100;
-        }
-        .enter {
-            font-size: 100px;
-            margin-top: 4%;
-            background-color: #299dcf;
-            width: 60%;
-            font-family: 'Comfortaa';
-            height: 400px;
-            border-radius: 90px;
-            box-shadow: 20px 20px black;
-
-        }
-    </style>
+    
+        
     <script>
         let quiz_btn = document.querySelector('.quiz');
         let enter_btn = document.querySelector('.enter');
