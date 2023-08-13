@@ -3,13 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <title>Создание нового теста</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet">
+<style>
+    *{
+        background-color: #45075c;
+    }
+    h1, h2 {
+        font-family: 'Comfortaa';
+        border-radius: 20px;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;   
+    }
+    h1, h2, input, button {
+        box-shadow: 10px 10px black;
+    }
+    h1 {
+        width: 600px;
+        height: 200px;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        background-color: #4762e5;
+    }
+    h2 {
+        height: 100px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        background-color: #edcb51;
+        display: flex;
+        font-size: 40px;
+    }
+    body {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+    input {
+        background-color: #38b943;
+        border-radius: 10px;
+        height: 100px;
+        width: 400px;
+        border-radius: 20px;
+        outline: 0 !important;
+    }
+    #last_input {
+        height: 30px;
+    }
+    #que {
+        background-color: #299dcf;
+    }
+    #q_i {
+        background-color: #38b943;
+    }
+    button {
+        background-color: #e57747;
+        height: 150px;
+        width: 2000px;
+        font-size: 40px;
+        border-radius: 20px;
+        font-family: 'Comfortaa';
+        width: 300px;
+    }
+    .add {
+        margin-right: 5%;
+        margin-left: 30%;
+        float: left;
+        margin-top: 20px;
+        margin-left: 17%;
+    }
+    .end {
+        float: left;
+        margin-top: 0px;
+    }
+</style>
 </head>
 <body>
     <h1>Создание нового теста. Заполните поля, если есть лишний ответ - просто оставьте его пустым</h1>
 
 
-    <h2>Вопрос</h2>
-    <input type="text">
+    <h2 id="que">Вопрос</h2>
+    <input type="text" id="q_i">
     <h2>Вариант ответа 1</h2>
     <input type="text">
     <h2>Вариант ответа 2</h2>
@@ -19,9 +96,9 @@
     <h2>Вариант ответа 4</h2>
     <input type="text">
     <h2>Порядковый номер правильного ответа</h2>
-    <input type="text">
-
-    <button class="add">Добавить вопрос</button>
+    <input type="text" id="last_input">
+    <br>
+    <button class="add">Добавить вопрос</button><br>
     <button class="end">Закончить и отправить</button>
 
     <script>
