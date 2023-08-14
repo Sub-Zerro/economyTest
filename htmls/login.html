@@ -3,11 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Вход</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet">
+    <style>
+        *{
+            background-color: #45075c;
+        }
+        h1 {
+            font-family: 'Comfortaa';
+            font-size: 50px;
+            margin-top: 10%;
+            color: #4762e5;
+            
+        }
+        body {
+            text-align: center;
+        }
+        input {
+            margin-top: 40px;
+            height: 400px;
+            width: 400px;
+            border-radius: 30px;
+            box-shadow: 15px 20px black;
+        }
+        .login {
+            background-color: #299dcf;
+        }
+        .pass {
+            background-color: #38b943;
+        }
+        .check {
+            background-color: white;
+            margin-top: 80px;
+            height: 100px;
+            width: 400px;
+            border-radius: 30px;
+            font-family: 'Comfortaa';
+            font-size: 30px;
+            background-color: #edcb51;
+            box-shadow: 15px 20px black;
+        }
+    </style>
 </head>
 <body>
-    <input class="login" type="text">
-    <input class="pass" type="text">
-    <button class="check">войти</button>
+    <h1>Введите ваши данные</h1>
+    <input class="login" type="text"><br>
+    <input class="pass" type="text"><br>
+    <button class="check">Bойти</button>
 
     <script>
         let login_input = document.querySelector('.login');
