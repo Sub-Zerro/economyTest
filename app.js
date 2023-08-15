@@ -1,61 +1,32 @@
 const express = require('express')
 const app = express()
-//var myParser = require("body-parser");
 const fs = require('fs');
 const path = require('path');
-const pg = require('pg');
 const {Pool, Client} = require('pg');
-const filepath = path.join(__dirname, 'index.html');
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-const pool = new Pool({
-    host: 'db.lsqzvzhcwzpvqhgpdwbl.supabase.co',
-    // Do not hard code your username and password.
-    // Consider using Node environment variables.
-    user: 'postgres',
-    password: 'wrH_RT@easgfh',
-    database: 'postgres',
-    port: 5432,
-    ssl: true
-})
+//Подключаем модули и настраиваем process
+
+const database_data = require(path.join(__dirname, 'database.json'));
+const pool = new Pool(database_data);
+//Создаем новый пул в базу
+
+let my_json = require(path.join(__dirname, 'users.json'));
+//Подключаем json файл с данными пользователей
+
 pool.connect();
-
-// let arr = [];
-// const ranswArr = ['1', '4', '3', '4', '2', '2', '3', '1', '2', '2', '2', '2', '2', '2', '4', '4', '1'];
-
-let users = {
-    us1:{
-        name: '1',
-        pass: '1',
-        user_name: 'test'
-    },
-    us2:{
-        name: "economica",
-        pass: "2023",
-        user_name: 'Юлия Александровна'
-    }
-}
+//Подключаемся к базе по данным переменной pool
 
 
-//const client = new pg.Client(pool);
 
-app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.json());
 app.use(express.urlencoded());
+//Для чтения файловпри get запросах ниже
 
 app.get('/', function(req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     var myReadStream = fs.createReadStream(path.join(__dirname, '/htmls', 'home.html'), 'utf8');
     myReadStream.pipe(res);
 });
-
-app.get('/pups227', function (req, res){
-    (async ()=>{
-        await queryDatabase();
-        await res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-        for (let i = 0; i<arr.length; i++){
-            res.write(`<div>${arr[i][0]} - ${arr[i][3]} баллов из 17, ${100*arr[i][3]/18} % </div>`);
-        }
-    })()
-})
 
 app.get("/login", function (req, res){
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -86,6 +57,7 @@ app.get('/user', function(req, res) {
     var myReadStream = fs.createReadStream(path.join(__dirname, '/htmls', 'create_ans.html'), 'utf8');
     myReadStream.pipe(res);
 });
+// Обработка get запросов
 
 
 
@@ -99,10 +71,15 @@ app.post('/', function (req, res) {
 
 app.post("/login", function (req, res) {
     console.log(req.body);
-    if ((req.body.name == users.us1.name) && (req.body.password == users.us1.pass)){
-        res.sendStatus(200);
-        console.log(1);
-    }else{
+    let count = 0;
+    for (var key in my_json){
+        if ((req.body.name == my_json[key].name) && (req.body.password == my_json[key].pass)){
+            res.sendStatus(200);
+            console.log(1);
+            count++;
+        }
+    }
+    if (count==0){
         res.status(401).end();
         console.log(2);
     }
@@ -142,10 +119,9 @@ app.post("/create", function (req, res) {
             .catch(err => {
                 console.log(err);
             });
-        console.log('ВЫВОЖУ!!!!');
+
         console.log(last_num);
 
-        //res.send(`${last_num}`);
         res.send({otv: last_num});
     })()
 })
@@ -160,7 +136,7 @@ app.post("/do", function (req, res){
 
     new Promise(function (resolve, reject) {
         (async ()=>{
-            const query = `select * from questions where num_quiz=${req.body.num}`;
+            const query = `select * from questions where num_quiz=${req.body.num} order by num_question asc`;
             await pool.query(query)
                 .then(res => {
                     const rows = res.rows;
@@ -205,11 +181,13 @@ app.post("/do", function (req, res){
 app.post("/answers", function (req, res){
     get_answers(res, req.body.num_quiz);
 })
+//Обработка post запросов
 
 
 
 
 app.listen(3000)
+//Слушаем сервер через порт 3000
 
 
 
@@ -219,23 +197,17 @@ app.listen(3000)
 
 //Функции
 function post_to_base(name, answer, num_quiz){
-
-    const query = `INSERT INTO results(name, answer, num_quiz)values('${name}', '${answer}', '${num_quiz}');`;
-
-
     pool.query(`
             INSERT INTO results(name, answer, num_quiz)values('${name}', '${answer}', '${num_quiz}');
 
     `, (err, res) => {
         console.log(err, res);
-        //pool.end();
     })
-    //return 0;
 }
 
 
 
-async function queryDatabase(str_arr) {
+async function queryDatabase(str_arr, num_quiz) {
 
     console.log("THIS@@@@@@@@@@@@@@@");
     console.log(str_arr);
@@ -244,7 +216,7 @@ async function queryDatabase(str_arr) {
 
     let arr = [];
 
-    const query = "select name,answer from results;";
+    const query = `select name,answer from results where num_quiz = ${num_quiz}`;
 
     await pool.query(query)
         .then(res => {
@@ -257,10 +229,7 @@ async function queryDatabase(str_arr) {
             for (let i = 0; i<res.rows.length; i++){
                 arr.push([res.rows[i]['name'],res.rows[i]['answer']]);
             }
-
             console.log(arr);
-
-            //process.exit();
         })
         .catch(err => {
             console.log(err);
@@ -326,7 +295,6 @@ function set_new_quiz(arr, str){
             INSERT INTO questions(num_quiz, num_question, question, ans1, ans2, ans3, ans4)values('${now_num_quiz}', '${i+1}', '${arr[i][0]}', '${arr[i][1]}', '${arr[i][2]}', '${arr[i][3]}', '${arr[i][4]}');
             `, (err, res) => {
                     console.log(err, res);
-                    //pool.end();
                 })
             }
 
@@ -353,9 +321,11 @@ function get_answers(res, num_quiz){
     let str = '';
     let str_arr;
     let end_arr;
+
+    console.log("Type = ", typeof (num_quiz));
     
     new Promise(function (resolve, reject) {
-        const query = `select name, answer from results where num_quiz=${num_quiz}`;
+        const query = `SELECT name, answer FROM results WHERE num_quiz = ${num_quiz}`;
         pool.query(query)
             .then(res => {
                 const rows = res.rows;
@@ -368,9 +338,7 @@ function get_answers(res, num_quiz){
                     arr.push([res.rows[i]["name"], res.rows[i]["answer"]]);
                 }
 
-                //console.log(arr);
                 resolve();
-
 
             })
             .catch(err => {
@@ -397,9 +365,6 @@ function get_answers(res, num_quiz){
 
                     resolve();
 
-                    //console.log(str);
-
-
                 })
                 .catch(err => {
                     console.log(err);
@@ -407,21 +372,11 @@ function get_answers(res, num_quiz){
         })
     }).then(()=>{
         return new Promise(function (resolve, reject) {
-            end_arr = queryDatabase(str_arr);
+            end_arr = queryDatabase(str_arr, num_quiz);
             resolve(end_arr);
         })
     }).then((end_arr)=>{
-        // (async ()=>{
-        //     await res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-        //     for (let i = 0; i<arr.length; i++){
-        //         res.write(`<div>${end_arr[i][0]} - ${end_arr[i][3]} баллов из 17, ${100*end_arr[i][3]/18} % </div>`);
-        //     }
-        // })()
-
         res.send({arr: end_arr});
-
-        //res.write("nsadfaaaaaaasfasfsadf");
-
     })
 }
 

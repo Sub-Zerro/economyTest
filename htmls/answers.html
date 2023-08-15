@@ -22,8 +22,9 @@
         })
       }).then((res)=>{
           res.json().then((end_res)=>{
+              let delitel = end_res.arr[0][2].length;
               for (let i = 0; i<end_res.arr.length; i++){
-                  document.write(`<div>${end_res.arr[i][0]} - ${end_res.arr[i][3]} баллов из ${end_res.arr[i][2].length}, ${100*end_res.arr[i][3]/18} % </div>`);
+                  document.write(`<div>${end_res.arr[i][0]} - ${end_res.arr[i][3]} баллов из ${end_res.arr[i][2].length}, ${(100/delitel)*end_res.arr[i][3]} % </div>`);
               }
           })
       })

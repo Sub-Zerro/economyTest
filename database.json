@@ -1,0 +1,8 @@
+{
+  "host": "db.lsqzvzhcwzpvqhgpdwbl.supabase.co",
+  "user": "postgres",
+  "password": "wrH_RT@easgfh",
+  "database": "postgres",
+  "port": 5432,
+  "ssl": true
+}

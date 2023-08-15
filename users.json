@@ -1,0 +1,12 @@
+{
+  "user1":{
+    "name": "1",
+    "pass": "1",
+    "user_name": "test"
+  },
+  "user2":{
+    "name": "economica",
+    "pass": "2023",
+    "user_name": "Юлия Александровна"
+  }
+}
