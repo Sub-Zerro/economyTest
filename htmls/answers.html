@@ -8,7 +8,20 @@
   <script>
 
     (async ()=>{
-      let num_quiz_promot = await prompt("Введите номер квиза");
+        function get_num(){
+            let num_quiz_promot = prompt("Введите номер квиза");
+
+            if (num_quiz_promot == undefined || num_quiz_promot == '' || num_quiz_promot == null){
+                get_num();
+                console.log("error");
+            }else{
+                return num_quiz_promot;
+            }
+        }
+        let num_quiz_promot = await get_num();
+
+
+      console.log(num_quiz_promot);
 
       fetch("/answers", {
         method: "post",
@@ -24,7 +37,7 @@
           res.json().then((end_res)=>{
               let delitel = end_res.arr[0][2].length;
               for (let i = 0; i<end_res.arr.length; i++){
-                  document.write(`<div>${end_res.arr[i][0]} - ${end_res.arr[i][3]} баллов из ${end_res.arr[i][2].length}, ${(100/delitel)*end_res.arr[i][3]} % </div>`);
+                  document.write(`<div>${end_res.arr[i][0]} - ${end_res.arr[i][3]} баллов из ${end_res.arr[i][2].length}, (${Math.round((100/delitel)*end_res.arr[i][3])} %) </div>`);
               }
           })
       })
