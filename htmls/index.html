@@ -89,10 +89,60 @@ body {
 
 
       textarea.textContent = arr[numQ][0];
-      buttons[0].textContent = arr[numQ][1] ? arr[numQ][1] : buttons[0].style.display = 'none';
-      buttons[1].textContent = arr[numQ][2] ? arr[numQ][2] : buttons[1].style.display = 'none';
-      buttons[2].textContent = arr[numQ][3] ? arr[numQ][3] : buttons[2].style.display = 'none';
-      buttons[3].textContent = arr[numQ][4] ? arr[numQ][4] : buttons[3].style.display = 'none';
+      // buttons[0].textContent = arr[numQ][1] ? arr[numQ][1] : buttons[0].style.display = 'none';
+      // buttons[1].textContent = arr[numQ][2] ? arr[numQ][2] : buttons[1].style.display = 'none';
+      // buttons[2].textContent = arr[numQ][3] ? arr[numQ][3] : buttons[2].style.display = 'none';
+      // buttons[3].textContent = arr[numQ][4] ? arr[numQ][4] : buttons[3].style.display = 'none';
+
+      for (let i = 0; i < buttons.length; i++){
+        buttons[i].style.display = 'inline';
+      }
+
+      if (arr[numQ][1] != ''){
+        buttons[0].textContent = arr[numQ][1];
+      }else{
+        buttons[0].style.display = 'none'
+      }
+      if (arr[numQ][2] != ''){
+        buttons[1].textContent = arr[numQ][2];
+      }else{
+        buttons[1].style.display = 'none'
+      }
+
+      if (arr[numQ][3] != ''){
+        buttons[2].textContent = arr[numQ][3];
+      }else{
+        buttons[2].style.display = 'none'
+      }
+
+      if (arr[numQ][4] != ''){
+        buttons[3].textContent = arr[numQ][4];
+      }else{
+        buttons[3].style.display = 'none'
+      }
+
+      // buttons[0].textContent = arr[numQ][1] ? arr[numQ][1] : buttons[0].style.display = 'none';
+      // buttons[1].textContent = arr[numQ][2] ? arr[numQ][2] : buttons[1].style.display = 'none';
+      // buttons[2].textContent = arr[numQ][3] ? arr[numQ][3] : buttons[2].style.display = 'none';
+      // buttons[3].textContent = arr[numQ][4] ? arr[numQ][4] : buttons[3].style.display = 'none';
+
+      // for(let i = 0; i < arr[numQ].length; i++){
+      //   if (i<=buttons.length){
+      //     if (arr[numQ][i+1]!=''){
+      //       console.log(arr[numQ][i]);
+      //       buttons[i].textContent = arr[numQ][i+1];
+      //       buttons[i].style.display = 'block';
+      //     }else{
+      //       buttons[i].style.display = 'hidden';
+      //     }
+      //   }
+      // }
+
+      // buttons[0].textContent = arr[numQ][1];
+      // buttons[1].textContent = arr[numQ][2];
+      // buttons[2].textContent = arr[numQ][3];
+      // buttons[3].textContent = arr[numQ][4];
+
 
       for(let i = 0; i < buttons.length; i++){
         buttons[i].onclick = (()=>{
@@ -102,20 +152,22 @@ body {
               number_of_q++;
               showQ(number_of_q, obj, num_quiz_f);
             }else{
-              alert("Ответ записан, вкладку можно закрывать");
+
               //fetch(`/about?name=${name}&scope=${scope_str}`);
-              fetch("/", {
-                method: "post",
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  name: name,
-                  answer: scope_str,
-                  num_quiz: num_quiz_f
+
+                 fetch("/", {
+                  method: "post",
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    name: name,
+                    answer: scope_str,
+                    num_quiz: num_quiz_f
+                  })
                 })
-              })
+                alert("Ответ записан, вкладку можно закрывать");
 
             }
           }
