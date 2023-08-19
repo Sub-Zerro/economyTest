@@ -3,6 +3,8 @@ const app = express()
 const fs = require('fs');
 const path = require('path');
 const {Pool, Client} = require('pg');
+const cookieParser = require("cookie-parser");
+const sessions = require('express-session');
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 //Подключаем модули и настраиваем process
 
@@ -21,12 +23,27 @@ const js_functions = require(path.join(__dirname, 'functions.js'));
 //Подключаем файл с функциями
 
 
+
+const oneDay = 1000 * 60 * 60 * 24 * 30;
+
+//session middleware
+app.use(sessions({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized:true,
+    cookie: { maxAge: oneDay },
+    resave: true
+}));
+
+
+
+
 const homeRoutes = require(path.join(__dirname, './routes/home.js'));
 const answerRoutes = require(path.join(__dirname, './routes/answers.js'));
 const createRoutes = require(path.join(__dirname, './routes/create.js'));
 const doRoutes = require(path.join(__dirname, './routes/do.js'));
 const loginRoutes = require(path.join(__dirname, './routes/login.js'));
-const userRoutes = require(path.join(__dirname, './routes/user.js'));
+let userRoutes = require(path.join(__dirname, './routes/user.js'));
+userRoutes = userRoutes.router;
 //Подключаем роуты
 
 
