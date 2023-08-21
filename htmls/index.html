@@ -205,8 +205,17 @@ body {
           })
         }).then((res)=>{
           res.json().then((res_end)=>{
+            //console.log(res_end);
             showQ(numQ, res_end, res_end.num_quiz);
+          }).catch(()=>{
+            (async ()=>{
+              await alert('Квиз не найден');
+              window.location.replace("/");
+            })()
+
           })
+        }).catch(()=>{
+          window.location.replace("/");
         })
       return
 

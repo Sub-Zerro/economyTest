@@ -189,12 +189,7 @@ function get_answers(res, num_quiz){
 }
 
 function add_err(err){
-    fs.writeFile("errors.txt", `${err} \n`, function(err) {
-        if(err) {
-            return console.log(err);
-        }
-        console.log("The file was saved!");
-    });
+    fs.appendFileSync('errors.txt', `${err} \n \n`);
 }
 
 module.exports.post_to_base = post_to_base;

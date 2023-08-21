@@ -16,7 +16,8 @@ router.post("/", function (req, res){
     let obj = {
         arr: [],
         str: '',
-        num_quiz: req.body.num
+        num_quiz: req.body.num,
+        scam: false
     };
     let arr = [];
 
@@ -38,7 +39,8 @@ router.post("/", function (req, res){
                     obj.arr = arr;
                 })
                 .catch(err => {
-                    console.log(err);
+                    obj.scam = true;
+                    reject(err);
                 });
 
             const query2 = `select str from right_strs where num_quiz=${req.body.num}`;
@@ -53,15 +55,17 @@ router.post("/", function (req, res){
                     obj.str = res.rows[0]["str"];
                 })
                 .catch(err => {
-                    console.log(err);
+                    obj.scam = true;
+                    reject(err);
                 });
 
-            //console.log(obj);
             resolve();
         })()
     }).then(()=>{
         res.send(obj);
     }).catch((err)=>{
+        //res.end('/123');
+        res.redirect('https://fonts.google.com/');
         js_functions.add_err(err);
     })
 })
