@@ -67,7 +67,7 @@ async function queryDatabase(str_arr, num_quiz) {
 }
 
 
-function set_new_quiz(arr, str){
+function set_new_quiz(arr, str, author){
 
     let last_num;
 
@@ -100,7 +100,7 @@ function set_new_quiz(arr, str){
 
             for (let i = 0; i < arr.length; i++){
                 pool.query(`
-            INSERT INTO questions(num_quiz, num_question, question, ans1, ans2, ans3, ans4)values('${now_num_quiz}', '${i+1}', '${arr[i][0]}', '${arr[i][1]}', '${arr[i][2]}', '${arr[i][3]}', '${arr[i][4]}');
+            INSERT INTO questions(num_quiz, num_question, question, ans1, ans2, ans3, ans4, author)values('${now_num_quiz}', '${i+1}', '${arr[i][0]}', '${arr[i][1]}', '${arr[i][2]}', '${arr[i][3]}', '${arr[i][4]}', '${author}');
             `, (err, res) => {
                     console.log(err, res);
                 })
@@ -192,9 +192,61 @@ function add_err(err){
     fs.appendFileSync('errors.txt', `${err} \n \n`);
 }
 
+async function check_settings(name){
+    //console.log(typeof (name));
+    console.log('name', name);
+    let arr = [];
+    const query2 = `select num_quiz, st from status where name='${name}'`;
+    //const query2 = `select st from status`;
+
+    await pool.query(query2)
+        .then(res => {
+            const rows = res.rows;
+
+            rows.map(row => {
+                console.log(`Read: ${JSON.stringify(row)}`);
+            });
+
+            //st = res.rows[0]["st"];
+            //st = 1;
+            for (let i = 0; i < res.rows.length; i++){
+                arr.push([res.rows[i]["num_quiz"], res.rows[i]["st"]]);
+            }
+
+
+            return;
+
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+    return arr;
+}
+
+async function change_settings(num_quiz, value){
+    const query2 = `UPDATE status SET st=${value} WHERE num_quiz=${num_quiz}`;
+    //const query2 = `select st from status`;
+
+    await pool.query(query2)
+        .then(res => {
+            const rows = res.rows;
+
+            rows.map(row => {
+                console.log(`Read: ${JSON.stringify(row)}`);
+            });
+
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
 module.exports.post_to_base = post_to_base;
 module.exports.queryDatabase = queryDatabase;
 module.exports.set_new_quiz = set_new_quiz;
 module.exports.get_answers = get_answers;
 module.exports.add_err = add_err;
+module.exports.check_settings = check_settings;
+module.exports.change_settings = change_settings;
 

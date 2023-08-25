@@ -35,7 +35,7 @@ router.post("/", function (req, res) {
 
 
     (async ()=>{
-        await js_functions.set_new_quiz(arr, str);
+        await js_functions.set_new_quiz(arr, str, req.session.userid);
 
         const query = `select num_quiz from right_strs`;
 

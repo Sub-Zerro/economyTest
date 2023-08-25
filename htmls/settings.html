@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление квизами</title>
+</head>
+<body>
+    <script>
+        let p = new Promise(function (resolve, reject){
+            fetch("/settings", {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                //make sure to serialize your JSON body
+                body: JSON.stringify({step: "first"})
+            }).then((res)=>{
+                res.json().then((res_end)=>{
+                    //console.log(res_end);
+
+                    let arr = res_end.arr;
+
+                    for (let i = 0; i < arr.length; i++){
+                        let div = document.createElement('div');
+
+
+
+                        let h1 = document.createElement('h1');
+                        h1.textContent = `${arr[i][0]}`;
+
+                        let btn = document.createElement('button');
+                        if (arr[i][1] == 0){
+                            btn.textContent = 'Открыть';
+
+                            btn.onclick = (()=>{
+                                fetch("/settings", {
+                                    method: "post",
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    //make sure to serialize your JSON body
+                                    body: JSON.stringify({
+                                        step: "second",
+                                        num_quiz: arr[i][0],
+                                        action: "to_1"
+                                    })
+                                })
+                            });
+                        }else{
+                            btn.textContent = 'Закрыть';
+
+                            btn.onclick = (()=>{
+                                fetch("/settings", {
+                                    method: "post",
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    //make sure to serialize your JSON body
+                                    body: JSON.stringify({
+                                        step: "second",
+                                        num_quiz: arr[i][0],
+                                        action: "to_0"
+                                    })
+                                })
+                            });
+                        }
+
+                        div.appendChild(h1);
+                        div.appendChild(btn);
+
+
+
+                        document.body.appendChild(div);
+
+                        div.style.display = 'flex';
+                        div.style.display = 'row'
+
+                        document.body.style.display = 'flex';
+                        document.body.style.flexDirection = 'column';
+                    }
+                })
+            })
+        })
+
+    </script>
+</body>
+</html>

@@ -36,6 +36,7 @@
 <!--  <h1 class="name_h1"></h1>-->
   <button class="answers">Посмотреть результаты квиза по коду</button>
   <button class="create">Создать новый квиз</button><br>
+    <button class="open">Управление квизами</button>
   
 
   <script>
@@ -43,6 +44,7 @@
 
     let create_btn = document.querySelector('.create');
     let answers_btn = document.querySelector('.answers');
+    let open_btn = document.querySelector('.open');
 
     create_btn.addEventListener('click', ()=>{
       window.location.replace("/create");
@@ -50,6 +52,10 @@
 
     answers_btn.addEventListener('click', ()=>{
       window.location.replace("/answers");
+    })
+
+    open_btn.addEventListener('click', ()=>{
+        window.location.replace("/settings");
     })
 
   </script>

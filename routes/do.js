@@ -21,53 +21,85 @@ router.post("/", function (req, res){
     };
     let arr = [];
 
-    new Promise(function (resolve, reject) {
-        (async ()=>{
-            const query = `select * from questions where num_quiz=${req.body.num} order by num_question asc`;
-            await pool.query(query)
-                .then(res => {
-                    const rows = res.rows;
+    new Promise(function (resolve, reject){
+        const query = `select st from status where num_quiz=${req.body.num}`;
+        pool.query(query)
+            .then(res => {
+                const rows = res.rows;
 
-                    rows.map(row => {
-                        console.log(`Read: ${JSON.stringify(row)}`);
-                    });
-
-                    for(let i = 0; i < res.rows.length; i++){
-                        arr.push([res.rows[i]["question"], res.rows[i]["ans1"], res.rows[i]["ans2"], res.rows[i]["ans3"], res.rows[i]["ans4"]]);
-                    }
-
-                    obj.arr = arr;
-                })
-                .catch(err => {
-                    obj.scam = true;
-                    reject(err);
+                rows.map(row => {
+                    console.log(`Read: ${JSON.stringify(row)}`);
                 });
 
-            const query2 = `select str from right_strs where num_quiz=${req.body.num}`;
-            await pool.query(query2)
-                .then(res => {
-                    const rows = res.rows;
+                let st = res.rows[0]["st"];
 
-                    rows.map(row => {
-                        console.log(`Read: ${JSON.stringify(row)}`);
-                    });
+                if (st==1){
+                    resolve();
+                }else{
+                    reject();
+                }
 
-                    obj.str = res.rows[0]["str"];
-                })
-                .catch(err => {
-                    obj.scam = true;
-                    reject(err);
-                });
 
-            resolve();
-        })()
+
+            })
+            .catch(err => {
+                reject(err);
+            });
+
+
     }).then(()=>{
-        res.send(obj);
+        new Promise(function (resolve, reject) {
+            (async ()=>{
+                const query = `select * from questions where num_quiz=${req.body.num} order by num_question asc`;
+                await pool.query(query)
+                    .then(res => {
+                        const rows = res.rows;
+
+                        rows.map(row => {
+                            console.log(`Read: ${JSON.stringify(row)}`);
+                        });
+
+                        for(let i = 0; i < res.rows.length; i++){
+                            arr.push([res.rows[i]["question"], res.rows[i]["ans1"], res.rows[i]["ans2"], res.rows[i]["ans3"], res.rows[i]["ans4"]]);
+                        }
+
+                        obj.arr = arr;
+                    })
+                    .catch(err => {
+                        obj.scam = true;
+                        reject(err);
+                    });
+
+                const query2 = `select str from right_strs where num_quiz=${req.body.num}`;
+                await pool.query(query2)
+                    .then(res => {
+                        const rows = res.rows;
+
+                        rows.map(row => {
+                            console.log(`Read: ${JSON.stringify(row)}`);
+                        });
+
+                        obj.str = res.rows[0]["str"];
+                    })
+                    .catch(err => {
+                        obj.scam = true;
+                        reject(err);
+                    });
+
+                resolve();
+            })()
+        }).then(()=>{
+            res.send(obj);
+        }).catch((err)=>{
+            //res.end('/123');
+            res.redirect('https://fonts.google.com/');
+            js_functions.add_err(err);
+        })
     }).catch((err)=>{
-        //res.end('/123');
-        res.redirect('https://fonts.google.com/');
-        js_functions.add_err(err);
+        js_functions.add_err('the requested quiz is not available');
     })
+
+
 })
 
 module.exports = router
