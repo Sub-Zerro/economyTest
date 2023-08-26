@@ -14,7 +14,7 @@
                     'Content-Type': 'application/json'
                 },
                 //make sure to serialize your JSON body
-                body: JSON.stringify({step: "first"})
+                body: JSON.stringify({})
             }).then((res)=>{
                 res.json().then((res_end)=>{
                     //console.log(res_end);
@@ -33,37 +33,43 @@
                         if (arr[i][1] == 0){
                             btn.textContent = 'Открыть';
 
-                            btn.onclick = (()=>{
-                                fetch("/settings", {
-                                    method: "post",
+                            btn.onclick = (async (event)=>{
+                                await fetch("/settings", {
+                                    method: "put",
                                     headers: {
                                         'Accept': 'application/json',
                                         'Content-Type': 'application/json'
                                     },
                                     //make sure to serialize your JSON body
                                     body: JSON.stringify({
-                                        step: "second",
                                         num_quiz: arr[i][0],
                                         action: "to_1"
                                     })
+                                }).then(()=>{
+                                    alert(`Квиз ${arr[i][0]} стал закрытым`);
+
+                                    location.reload();
                                 })
                             });
                         }else{
                             btn.textContent = 'Закрыть';
 
-                            btn.onclick = (()=>{
-                                fetch("/settings", {
-                                    method: "post",
+                            btn.onclick = (async (event)=>{
+                                await fetch("/settings", {
+                                    method: "put",
                                     headers: {
                                         'Accept': 'application/json',
                                         'Content-Type': 'application/json'
                                     },
                                     //make sure to serialize your JSON body
                                     body: JSON.stringify({
-                                        step: "second",
                                         num_quiz: arr[i][0],
                                         action: "to_0"
                                     })
+                                }).then(()=>{
+                                    alert(`Квиз ${arr[i][0]} стал открытым`);
+
+                                    location.reload();
                                 })
                             });
                         }

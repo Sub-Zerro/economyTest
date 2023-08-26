@@ -205,8 +205,14 @@ body {
           })
         }).then((res)=>{
           res.json().then((res_end)=>{
-            //console.log(res_end);
-            showQ(numQ, res_end, res_end.num_quiz);
+            if (res_end.islock == true){
+              (async ()=>{
+                await alert("В данный момент квиз закрыт");
+                window.location.replace("/");
+              })()
+            }else{
+              showQ(numQ, res_end, res_end.num_quiz);
+            }
           }).catch(()=>{
             (async ()=>{
               await alert('Квиз не найден');

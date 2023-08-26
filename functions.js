@@ -67,11 +67,11 @@ async function queryDatabase(str_arr, num_quiz) {
 }
 
 
-function set_new_quiz(arr, str, author){
+async function set_new_quiz(arr, str, author){
 
     let last_num;
 
-    let p = new Promise(function (resolve, reject){
+    let p = await new Promise(function (resolve, reject){
         const query = `select num_quiz from right_strs`;
         pool.query(query)
             .then(res => {
@@ -120,6 +120,8 @@ function set_new_quiz(arr, str, author){
     }).then((now_num_quiz)=>{
         return now_num_quiz;
     })
+
+    return p;
 }
 
 
@@ -242,6 +244,14 @@ async function change_settings(num_quiz, value){
         })
 }
 
+function add_settings(num_quiz, author){
+    pool.query(`
+            INSERT INTO status(num_quiz, name, st)values('${num_quiz}', '${author}', 0);
+            `, (err, res) => {
+        console.log(err, res);
+    })
+}
+
 module.exports.post_to_base = post_to_base;
 module.exports.queryDatabase = queryDatabase;
 module.exports.set_new_quiz = set_new_quiz;
@@ -249,4 +259,5 @@ module.exports.get_answers = get_answers;
 module.exports.add_err = add_err;
 module.exports.check_settings = check_settings;
 module.exports.change_settings = change_settings;
+module.exports.add_settings = add_settings;
 

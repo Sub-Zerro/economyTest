@@ -35,7 +35,7 @@ router.post("/", function (req, res) {
 
 
     (async ()=>{
-        await js_functions.set_new_quiz(arr, str, req.session.userid);
+        let num_quiz = await js_functions.set_new_quiz(arr, str, req.session.userid);
 
         const query = `select num_quiz from right_strs`;
 
@@ -56,13 +56,17 @@ router.post("/", function (req, res) {
                         last_num = res.rows[i]["num_quiz"];
                     }
                 }
+
+                last_num++;
             })
             .catch(err => {
                 js_functions.add_err(err);
                 console.log(err);
             });
 
-        console.log(last_num);
+        await js_functions.add_settings(num_quiz, req.session.userid);
+
+        console.log("lastnum = ", last_num);
 
         res.send({otv: last_num});
     })()

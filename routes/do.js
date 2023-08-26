@@ -17,7 +17,8 @@ router.post("/", function (req, res){
         arr: [],
         str: '',
         num_quiz: req.body.num,
-        scam: false
+        scam: false,
+        islock: false
     };
     let arr = [];
 
@@ -96,6 +97,8 @@ router.post("/", function (req, res){
             js_functions.add_err(err);
         })
     }).catch((err)=>{
+        obj.islock = true;
+        res.send(obj);
         js_functions.add_err('the requested quiz is not available');
     })
 

@@ -170,8 +170,7 @@
                     str: str
                 })
             }).then((res)=>{
-                res.json().then(post => document.write(`Квиз записан, его номер - ${post.otv+1}`))
-                //alert(`Новый квиз записан, его номер - ${res.text()}`);
+                res.json().then(post => document.write(`Квиз записан, его номер - ${post.otv}`));
             })
         }
 

@@ -17,24 +17,26 @@ router.get('/', function (req, res){
 })
 
 router.post('/', async function (req, res){
-    if (req.body.step == "first"){
-        let arr  = await js_functions.check_settings(req.session.userid);
-        console.log(arr);
-        res.send({arr: arr});
+    let arr  = await js_functions.check_settings(req.session.userid);
+    console.log(arr);
+    res.send({arr: arr});
+})
+
+router.put('/', async function (req, res){
+    let num_quiz = req.body.num_quiz;
+    let value;
+    if (req.body.action == "to_1"){
+        value = 1;
     }else{
-        let num_quiz = req.body.num_quiz;
-        let value;
-        if (req.body.action == "to_1"){
-            value = 1;
-        }else{
-           value = 0;
-        }
-
-        console.log("num_quiz = ", num_quiz);
-        console.log("value = ", value);
-
-        await js_functions.change_settings(num_quiz, value);
+        value = 0;
     }
+
+    // console.log("num_quiz = ", num_quiz);
+    // console.log("value = ", value);
+
+    await js_functions.change_settings(num_quiz, value);
+
+    res.send({});
 })
 
 
