@@ -72,6 +72,7 @@ body {
     let scope_str = '';
     let number_of_q = 0;
     let name;
+    let num_quiz_for_save;
 
     let skip = false;
 
@@ -83,11 +84,13 @@ body {
 
     function showQ(numQ, obj, num_quiz_f){
 
+      console.log("scopestr = ", scope_str);
+
       let arr = obj.arr;
 
-      for(let i = 0; i < arr.length; i++){
-        console.log(arr[i]);
-      }
+      // for(let i = 0; i < arr.length; i++){
+      //   console.log(arr[i]);
+      // }
 
 
       let textarea = document.querySelector('.textarea');
@@ -133,7 +136,9 @@ body {
               showQ(number_of_q, obj, num_quiz_f);
             }else{
 
-                 fetch("/", {
+              (async ()=>{
+
+                await fetch("/", {
                   method: "post",
                   headers: {
                     'Accept': 'application/json',
@@ -144,8 +149,20 @@ body {
                     answer: scope_str,
                     num_quiz: num_quiz_f
                   })
+                }).then((res)=>{
+                  res.json().then(async (res_end)=>{
+                    await alert("Ответ записан, вкладку можно закрывать");
+                    window.location.replace('/');
+                  })
                 })
-                alert("Ответ записан, вкладку можно закрывать");
+
+
+              })()
+
+
+
+
+
 
             }
           }
@@ -190,6 +207,7 @@ body {
               })()
             }else{
               my_obj = res_end;
+              num_quiz_for_save = res_end.num_quiz;
               showQ(numQ, res_end, res_end.num_quiz);
             }
           }).catch(()=>{
@@ -215,7 +233,7 @@ body {
 
         await alert("Вы открыли другую вкладку, текущий вопрос аннулируется");
 
-        showQ(number_of_q, my_obj);
+        showQ(number_of_q, my_obj, num_quiz_for_save);
       }
     });
 

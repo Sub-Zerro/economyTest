@@ -12,7 +12,16 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function (req, res) {
-    js_functions.post_to_base(req.body.name, req.body.answer, req.body.num_quiz)
+    console.log(req.body);
+    try {
+        js_functions.post_to_base(req.body.name, req.body.answer, req.body.num_quiz);
+        res.send({isgood: true});
+    }
+    catch{
+        res.send({isgood: false});
+    }
+
+
 })
 
 module.exports = router

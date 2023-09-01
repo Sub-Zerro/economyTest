@@ -93,7 +93,6 @@ router.post("/", function (req, res){
             res.send(obj);
         }).catch((err)=>{
             //res.end('/123');
-            res.redirect('https://fonts.google.com/');
             js_functions.add_err(err);
         })
     }).catch((err)=>{
