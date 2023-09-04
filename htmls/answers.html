@@ -35,10 +35,45 @@
         })
       }).then((res)=>{
           res.json().then((end_res)=>{
-              let delitel = end_res.arr[0][2].length;
-              for (let i = 0; i<end_res.arr.length; i++){
-                  document.write(`<div>${end_res.arr[i][0]} - ${end_res.arr[i][3]} баллов из ${end_res.arr[i][2].length}, (${Math.round((100/delitel)*end_res.arr[i][3])} %) </div>`);
+
+              let arr = end_res.arr;
+              //console.log(end_res.counter);
+              let temp;
+              for (let i = 0; i < arr.length; i++){
+                  for (let k = 0; k < arr.length; k++){
+                      temp = arr[k];
+                      if (k!=0){
+                          if (arr[k-1][4]<arr[k][4]){
+                              arr[k] = arr[k-1];
+                              arr[k-1] = temp;
+                              //console.log(`${arr[k][4]} < ${arr[k-1][4]}`);
+
+                          }
+                      }
+                  }
               }
+              //console.log(arr);
+
+              let delitel = arr[0][1].length;
+              let div;
+              let p;
+              let br;
+              for (let i = 0; i < end_res.counter; i++){
+                  div = document.createElement("div");
+                  div.style.width = '500px';
+
+
+                  for (let i = 0; i<arr.length; i++){
+                      p = document.createElement("div");
+                      p.textContent = `${arr[i][0]} - ${arr[i][4]} баллов из ${arr[i][1].length}, (${Math.round((100/delitel)*arr[i][4])} %) ${arr[i][2]}`;
+                      div.appendChild(p);
+                      br = document.createElement("br");
+                      div.appendChild(br);
+                  }
+
+                  document.body.appendChild(div);
+              }
+
           })
       })
     })()

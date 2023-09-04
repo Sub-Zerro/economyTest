@@ -4,9 +4,9 @@ const app = require(path.join(__dirname, 'app.js'));
 const pool = app.pool;
 
 
-function post_to_base(name, answer, num_quiz){
+function post_to_base(name, answer, num_quiz, date){
     pool.query(`
-            INSERT INTO results(name, answer, num_quiz)values('${name}', '${answer}', '${num_quiz}');
+            INSERT INTO results(name, answer, num_quiz, date)values('${name}', '${answer}', '${num_quiz}', '${date}');
 
     `, (err, res) => {
         console.log(err, res);
@@ -24,7 +24,7 @@ async function queryDatabase(str_arr, num_quiz) {
 
     let arr = [];
 
-    const query = `select name,answer from results where num_quiz = ${num_quiz}`;
+    const query = `select * from results where num_quiz = ${num_quiz}`;
 
     await pool.query(query)
         .then(res => {
@@ -35,7 +35,7 @@ async function queryDatabase(str_arr, num_quiz) {
             });
 
             for (let i = 0; i<res.rows.length; i++){
-                arr.push([res.rows[i]['name'],res.rows[i]['answer']]);
+                arr.push([res.rows[i]['name'],res.rows[i]['answer'],res.rows[i]['date']]);
             }
             console.log(arr);
         })
@@ -52,9 +52,9 @@ async function queryDatabase(str_arr, num_quiz) {
     for(let i = 0; i<arr.length; i++){
         let counter = 0;
         console.log("arr[i] = ", arr[i]);
-        for(let k = 0; k<arr[i][2].length; k++){
+        for(let k = 0; k<arr[i][3].length; k++){
             console.log("str_arr[i] = ", str_arr[k]);
-            if (arr[i][2][k]==str_arr[k]){
+            if (arr[i][3][k]==str_arr[k]){
                 counter++;
                 console.log("counter = ", counter);
             }
@@ -131,11 +131,12 @@ function get_answers(res, num_quiz){
     let str = '';
     let str_arr;
     let end_arr;
+    let counter;
 
     console.log("Type = ", typeof (num_quiz));
 
     new Promise(function (resolve, reject) {
-        const query = `SELECT name, answer FROM results WHERE num_quiz = ${num_quiz}`;
+        const query = `SELECT * FROM results WHERE num_quiz = ${num_quiz}`;
         pool.query(query)
             .then(res => {
                 const rows = res.rows;
@@ -145,7 +146,7 @@ function get_answers(res, num_quiz){
                 });
 
                 for (let i = 0; i<res.rows.length; i++){
-                    arr.push([res.rows[i]["name"], res.rows[i]["answer"]]);
+                    arr.push([res.rows[i]["name"], res.rows[i]["answer"], res.rows["date"]]);
                 }
 
                 resolve();
@@ -182,11 +183,31 @@ function get_answers(res, num_quiz){
         })
     }).then(()=>{
         return new Promise(function (resolve, reject) {
+            const query2 = `select counter from status where num_quiz=${num_quiz}`;
+            pool.query(query2)
+                .then(res => {
+                    const rows = res.rows;
+
+                    rows.map(row => {
+                        console.log(`Read: ${JSON.stringify(row)}`);
+                    });
+
+                    counter = res.rows[0]["counter"];
+
+                    resolve();
+
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        })
+    }).then(()=>{
+        return new Promise(function (resolve, reject) {
             end_arr = queryDatabase(str_arr, num_quiz);
             resolve(end_arr);
         })
     }).then((end_arr)=>{
-        res.send({arr: end_arr});
+        res.send({arr: end_arr, counter:counter});
     })
 }
 
@@ -198,7 +219,7 @@ async function check_settings(name){
     //console.log(typeof (name));
     console.log('name', name);
     let arr = [];
-    const query2 = `select num_quiz, st from status where name='${name}'`;
+    const query2 = `select * from status where name='${name}'`;
     //const query2 = `select st from status`;
 
     await pool.query(query2)
@@ -227,7 +248,7 @@ async function check_settings(name){
 }
 
 async function change_settings(num_quiz, value){
-    const query2 = `UPDATE status SET st=${value} WHERE num_quiz=${num_quiz}`;
+    const query2 = `UPDATE status SET st=${value}, counter = counter+1 WHERE num_quiz=${num_quiz}`;
     //const query2 = `select st from status`;
 
     await pool.query(query2)
@@ -246,7 +267,7 @@ async function change_settings(num_quiz, value){
 
 function add_settings(num_quiz, author){
     pool.query(`
-            INSERT INTO status(num_quiz, name, st)values('${num_quiz}', '${author}', 0);
+            INSERT INTO status(num_quiz, name, st)values('${num_quiz}', '${author}', 0, 1);
             `, (err, res) => {
         console.log(err, res);
     })

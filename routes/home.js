@@ -12,16 +12,15 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function (req, res) {
+    let date = `${req.body.used_time.finish.day}.${req.body.used_time.finish.month}.${req.body.used_time.finish.year} ${req.body.used_time.finish.hour}:${req.body.used_time.finish.minutes}`;
     console.log(req.body);
     try {
-        js_functions.post_to_base(req.body.name, req.body.answer, req.body.num_quiz);
+        js_functions.post_to_base(req.body.name, req.body.answer, req.body.num_quiz, date);
         res.send({isgood: true});
     }
     catch{
         res.send({isgood: false});
     }
-
-
 })
 
 module.exports = router

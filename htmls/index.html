@@ -74,6 +74,22 @@ body {
     let name;
     let num_quiz_for_save;
 
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    month++;
+    let day = date.getDate();
+
+    let dateobj = {
+      start:{
+        year: year,
+        month: month,
+        date: date
+      }
+    }
+
+    console.log(year, month, day);
+
     let skip = false;
 
     let my_obj;
@@ -138,6 +154,23 @@ body {
 
               (async ()=>{
 
+                date = new Date();
+                year = date.getFullYear();
+                let month = date.getMonth();
+                month++;
+                let day = date.getDate();
+                let hour = date.getHours();
+                let minutes = date.getMinutes();
+
+                dateobj.finish = {
+                  year: year,
+                  month: month,
+                  day: day,
+                  hour: hour,
+                  minutes: minutes
+                }
+
+
                 await fetch("/", {
                   method: "post",
                   headers: {
@@ -147,7 +180,8 @@ body {
                   body: JSON.stringify({
                     name: name,
                     answer: scope_str,
-                    num_quiz: num_quiz_f
+                    num_quiz: num_quiz_f,
+                    used_time: dateobj
                   })
                 }).then((res)=>{
                   res.json().then(async (res_end)=>{
