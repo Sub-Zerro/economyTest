@@ -37,7 +37,7 @@
           res.json().then((end_res)=>{
 
               let arr = end_res.arr;
-              //console.log(end_res.counter);
+              console.log(arr);
               let temp;
               for (let i = 0; i < arr.length; i++){
                   for (let k = 0; k < arr.length; k++){
@@ -56,23 +56,64 @@
 
               let delitel = arr[0][1].length;
               let div;
+              let number;
               let p;
               let br;
-              for (let i = 0; i < end_res.counter; i++){
+              let user_name;
+              let count_of_balls;
+              let prosent;
+              let time;
+              // (let i = 0; i < end_res.counter; i++){
                   div = document.createElement("div");
-                  div.style.width = '500px';
+                  //div2 = document.createElement("div");
+                  div.style.width = '700px';
 
 
                   for (let i = 0; i<arr.length; i++){
                       p = document.createElement("div");
-                      p.textContent = `${arr[i][0]} - ${arr[i][4]} баллов из ${arr[i][1].length}, (${Math.round((100/delitel)*arr[i][4])} %) ${arr[i][2]}`;
+
+                      number = document.createElement("div");
+                      number.textContent = `${i+1})`;
+                      number.style.width = "30px"
+                      number.style.borderStyle = "double";
+                      p.appendChild(number);
+
+                      user_name = document.createElement("div");
+                      user_name.textContent = `${arr[i][0]}`;
+                      user_name.style.width = "200px";
+                      user_name.style.borderStyle = "double";
+                      p.appendChild(user_name);
+
+                      count_of_balls = document.createElement("div");
+                      count_of_balls.textContent = `${arr[i][4]} баллов из ${arr[i][1].length}`;
+                      count_of_balls.style.width = "100px";
+                      count_of_balls.style.borderStyle = "double";
+                      p.appendChild(count_of_balls);
+
+                      prosent = document.createElement("div");
+                      prosent.textContent = `${Math.round((100/delitel)*arr[i][4])} %`;
+                      prosent.style.width = "50px";
+                      prosent.style.borderStyle = "double";
+                      p.appendChild(prosent);
+
+                      time = document.createElement("div");
+                      time.textContent = `${arr[i][2]}`;
+                      time.style.width = "100px";
+                      time.style.borderStyle = "double";
+                      p.appendChild(time);
+
+                      //p.textContent = `${arr[i][0]} - ${arr[i][4]} баллов из ${arr[i][1].length}, (${Math.round((100/delitel)*arr[i][4])} %) ${arr[i][2]}`;
+                      p.style.display = "flex";
+                      p.style.flexDirection = "row";
                       div.appendChild(p);
+
                       br = document.createElement("br");
                       div.appendChild(br);
                   }
-
+                  div.style.display = "flex";
+                  div.style.flexDirection = "column";
                   document.body.appendChild(div);
-              }
+              //}
 
           })
       })
