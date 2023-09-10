@@ -3,9 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Таблица ответов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #45075c;
+            font-family: 'Comfortaa';
+        }
+        .main {
+            background-color: #edcb51;
+            margin-left: auto;
+            margin-right: auto;
+
+            border-radius: 50px;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+        h1 {
+            background-color: #edcb51;
+            border-radius: 20px;
+            margin-bottom: 5%;
+        }
+        .p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .num > text {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .us_n {
+            background-color: #38b943;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .cb {
+            background-color: #299dcf;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .num {
+            display: flex;
+            background-color: #e57747;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            padding-right: auto;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+        .pro {
+            background-color: #4762e5;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .time {
+            background-color: #901eb9;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding-right: 10px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .t1 {
+            background-color: #edcb51;
+            border-radius: 2000px;
+            width: 700px;
+            text-align: center;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            justify-content: center;
+            display: flex;
+            margin-top: 2.5%;
+            margin-bottom: 2.5%;
+        }
+    </style>
 </head>
 <body>
-  <script>
+<div class="t1"><h1>Таблица ответов</h1></div>
+<script>
 
     (async ()=>{
         function get_num(){
@@ -21,106 +104,113 @@
         let num_quiz_promot = await get_num();
 
 
-      console.log(num_quiz_promot);
+        console.log(num_quiz_promot);
 
-      fetch("/answers", {
-        method: "post",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        //make sure to serialize your JSON body
-        body: JSON.stringify({
-          num_quiz: Number(num_quiz_promot)
+        fetch("/answers", {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            //make sure to serialize your JSON body
+            body: JSON.stringify({
+                num_quiz: Number(num_quiz_promot)
+            })
+        }).then((res)=>{
+            res.json().then((end_res)=>{
+
+                let arr = end_res.arr;
+                console.log(arr);
+                let temp;
+                for (let i = 0; i < arr.length; i++){
+                    for (let k = 0; k < arr.length; k++){
+                        temp = arr[k];
+                        if (k!=0){
+                            if (arr[k-1][4]<arr[k][4]){
+                                arr[k] = arr[k-1];
+                                arr[k-1] = temp;
+                                //console.log(`${arr[k][4]} < ${arr[k-1][4]}`);
+
+                            }
+                        }
+                    }
+                }
+                //console.log(arr);
+
+                let delitel = arr[0][1].length;
+                let div;
+                let number;
+                let p;
+                let br;
+                let user_name;
+                let count_of_balls;
+                let prosent;
+                let time;
+                // (let i = 0; i < end_res.counter; i++){
+                div = document.createElement("div");
+                //div2 = document.createElement("div");
+                div.style.width = '700px';
+                div.className = 'main';
+
+
+                for (let i = 0; i<arr.length; i++){
+                    p = document.createElement("div");
+                    p.className = 'p';
+
+                    number = document.createElement("div");
+                    number.textContent = `${i+1})`;
+                    number.style.width = "30px"
+                    number.style.borderStyle = "double";
+                    number.className = 'num';
+                    p.appendChild(number);
+
+                    user_name = document.createElement("div");
+                    user_name.textContent = `${arr[i][0]}`;
+                    user_name.style.width = "200px";
+                    user_name.style.borderStyle = "double";
+                    user_name.className = 'us_n';
+                    p.appendChild(user_name);
+
+                    count_of_balls = document.createElement("div");
+                    count_of_balls.textContent = `${arr[i][4]} баллов из ${arr[i][1].length}`;
+                    count_of_balls.style.width = "100px";
+                    count_of_balls.style.borderStyle = "double";
+                    count_of_balls.className = 'cb';
+                    p.appendChild(count_of_balls);
+
+                    prosent = document.createElement("div");
+                    prosent.textContent = `${Math.round((100/delitel)*arr[i][4])} %`;
+                    prosent.style.width = "50px";
+                    prosent.style.borderStyle = "double";
+                    prosent.className = 'pro';
+                    p.appendChild(prosent);
+
+                    time = document.createElement("div");
+                    time.textContent = `${arr[i][2]}`;
+                    time.style.width = "100px";
+                    time.style.borderStyle = "double";
+                    time.className = 'time';
+                    p.appendChild(time);
+
+                    //p.textContent = `${arr[i][0]} - ${arr[i][4]} баллов из ${arr[i][1].length}, (${Math.round((100/delitel)*arr[i][4])} %) ${arr[i][2]}`;
+                    p.style.display = "flex";
+                    p.style.flexDirection = "row";
+                    div.appendChild(p);
+
+                    br = document.createElement("br");
+                    div.appendChild(br);
+                }
+                div.style.display = "flex";
+                div.style.flexDirection = "column";
+                document.body.appendChild(div);
+                //}
+
+            })
         })
-      }).then((res)=>{
-          res.json().then((end_res)=>{
-
-              let arr = end_res.arr;
-              console.log(arr);
-              let temp;
-              for (let i = 0; i < arr.length; i++){
-                  for (let k = 0; k < arr.length; k++){
-                      temp = arr[k];
-                      if (k!=0){
-                          if (arr[k-1][4]<arr[k][4]){
-                              arr[k] = arr[k-1];
-                              arr[k-1] = temp;
-                              //console.log(`${arr[k][4]} < ${arr[k-1][4]}`);
-
-                          }
-                      }
-                  }
-              }
-              //console.log(arr);
-
-              let delitel = arr[0][1].length;
-              let div;
-              let number;
-              let p;
-              let br;
-              let user_name;
-              let count_of_balls;
-              let prosent;
-              let time;
-              // (let i = 0; i < end_res.counter; i++){
-                  div = document.createElement("div");
-                  //div2 = document.createElement("div");
-                  div.style.width = '700px';
-
-
-                  for (let i = 0; i<arr.length; i++){
-                      p = document.createElement("div");
-
-                      number = document.createElement("div");
-                      number.textContent = `${i+1})`;
-                      number.style.width = "30px"
-                      number.style.borderStyle = "double";
-                      p.appendChild(number);
-
-                      user_name = document.createElement("div");
-                      user_name.textContent = `${arr[i][0]}`;
-                      user_name.style.width = "200px";
-                      user_name.style.borderStyle = "double";
-                      p.appendChild(user_name);
-
-                      count_of_balls = document.createElement("div");
-                      count_of_balls.textContent = `${arr[i][4]} баллов из ${arr[i][1].length}`;
-                      count_of_balls.style.width = "100px";
-                      count_of_balls.style.borderStyle = "double";
-                      p.appendChild(count_of_balls);
-
-                      prosent = document.createElement("div");
-                      prosent.textContent = `${Math.round((100/delitel)*arr[i][4])} %`;
-                      prosent.style.width = "50px";
-                      prosent.style.borderStyle = "double";
-                      p.appendChild(prosent);
-
-                      time = document.createElement("div");
-                      time.textContent = `${arr[i][2]}`;
-                      time.style.width = "100px";
-                      time.style.borderStyle = "double";
-                      p.appendChild(time);
-
-                      //p.textContent = `${arr[i][0]} - ${arr[i][4]} баллов из ${arr[i][1].length}, (${Math.round((100/delitel)*arr[i][4])} %) ${arr[i][2]}`;
-                      p.style.display = "flex";
-                      p.style.flexDirection = "row";
-                      div.appendChild(p);
-
-                      br = document.createElement("br");
-                      div.appendChild(br);
-                  }
-                  div.style.display = "flex";
-                  div.style.flexDirection = "column";
-                  document.body.appendChild(div);
-              //}
-
-          })
-      })
     })()
 
 
 
-  </script>
+</script>
 </body>
 </html>
