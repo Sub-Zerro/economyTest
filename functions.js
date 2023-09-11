@@ -118,6 +118,16 @@ async function set_new_quiz(arr, str, author){
             resolve(now_num_quiz);
         })
     }).then((now_num_quiz)=>{
+        return new Promise(async function (resolve, reject){
+            // await pool.query(`
+            // INSERT INTO status(num_quiz, st)values('${now_num_quiz}', 0);
+            // `, (err, res) => {
+            //     console.log(err, res);
+            // })
+            resolve(now_num_quiz);
+        })
+
+    }).then((now_num_quiz)=>{
         return now_num_quiz;
     })
 
@@ -267,7 +277,7 @@ async function change_settings(num_quiz, value){
 
 function add_settings(num_quiz, author){
     pool.query(`
-            INSERT INTO status(num_quiz, name, st)values('${num_quiz}', '${author}', 0, 1);
+            INSERT INTO status(num_quiz, name, st)values('${num_quiz}', '${author}', 0);
             `, (err, res) => {
         console.log(err, res);
     })

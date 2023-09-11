@@ -17,6 +17,7 @@ router.get('/', function (req, res){
 })
 
 router.post('/', async function (req, res){
+    console.log('POST!');
     let arr  = await js_functions.check_settings(req.session.userid);
     console.log(arr);
     res.send({arr: arr});
