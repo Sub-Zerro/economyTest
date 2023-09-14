@@ -62,6 +62,23 @@ async function queryDatabase(str_arr, num_quiz) {
         }
         arr[i].push(counter)
     }
+
+    for(let i = 0; i < arr.length; i++){
+        let counter = 0;
+        let push_arr = [];
+        for (let k = 0; k < arr[i][3].length; k++){
+            if (arr[i][1][k] != str_arr[k]){
+                push_arr.push(k+1);
+                counter++;
+            }
+        }
+        if (counter == 0){
+            arr[i].push(null);
+        }else{
+            arr[i].push(push_arr);
+        }
+    }
+
     console.log(arr)
     return arr;
 }
