@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Обзор</title>
+
+    <style>
+        .main{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .questions{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .player{
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .date{
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .prosent{
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .count{
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="player">Участник
+
+        </div>
+
+        <div class="count">Счет
+
+        </div>
+
+        <div class="prosent">Процент
+
+        </div>
+
+        <div class="date">Дата
+
+        </div>
+
+        <div class="questions">
+
+        </div>
+    </div>
+
+
+    <script>
+        (async ()=>{
+            let arr;
+            let number_of_questions;
+            let questions_arr;
+            let right_str
+            let num_quiz = await prompt("Введите номер квиза");
+
+            new Promise(async function (resolve, reject){
+                await fetch("/review", {
+                    method: "post",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    //make sure to serialize your JSON body
+                    body: JSON.stringify({num_quiz: num_quiz})
+                }).then((res)=>{
+                    res.json().then((data)=>{
+                        console.log(data);
+                        arr = data.arr;
+                        number_of_questions = arr[0][3].length;
+                        questions_arr = data.questions;
+                        right_str = data.right_str;
+                        resolve();
+                    })
+                })
+            }).then(()=>{
+
+                let temp;
+                for (let i = 0; i < arr.length; i++){
+                    for (let k = 0; k < arr.length; k++){
+                        temp = arr[k];
+                        if (k!=0){
+                            if (arr[k-1][4]<arr[k][4]){
+                                arr[k] = arr[k-1];
+                                arr[k-1] = temp;
+                                //console.log(`${arr[k][4]} < ${arr[k-1][4]}`);
+
+                            }
+                        }
+                    }
+                }
+
+                let questions = document.querySelector('.questions');
+                let player = document.querySelector('.player');
+                let prosent = document.querySelector('.prosent');
+                let count = document.querySelector('.count');
+                let date = document.querySelector('.date');
+                let counter;
+                let div;
+                let true_count;
+
+
+
+                for (let i = 0; i < number_of_questions; i++){
+
+                    true_count = 0;
+                    console.log("true count = ", true_count);
+                    div = document.createElement('div');
+                    for (let k = 0; k < arr.length; k++){
+                        if (arr[k][5] != null){
+                                for (let j = 0; j < arr[k][5].length; j++){
+                                    if ((i+1) == arr[k][5][j]){
+                                        true_count++;
+                                    }
+                                }
+                        }
+                    }
+
+                    div.textContent = `Q${i+1}(${Math.round((100/arr.length)*(arr.length-true_count))}%)`;
+                    div.className = `Q${i+1}`;
+                    questions.appendChild(div);
+                }
+
+                let q_str;
+
+                for (let i = 0; i < arr.length; i++){
+                    div = document.createElement('div');
+                    div.style.height = "30px";
+                    div.textContent = arr[i][0];
+                    player.appendChild(div);
+
+                    div = document.createElement('div');
+                    div.style.height = "30px";
+                    div.textContent = `${arr[i][2]}`;
+                    date.appendChild(div);
+
+                    div = document.createElement('div');
+                    div.style.height = "30px";
+                    div.textContent = `${arr[i][4]}`;
+                    count.appendChild(div);
+
+                    div = document.createElement('div');
+                    div.style.height = "30px";
+                    div.textContent = `${Math.round((100/number_of_questions)*arr[i][4])} %`;
+                    prosent.appendChild(div);
+
+
+
+
+                    for (let j = 0; j < number_of_questions; j++){
+                        // for (let p = 0; p < questions_arr[i].length; p++){
+                        //     if (p!=0){
+                        //         q_str+=`${arr[i][p]}`;
+                        //     }
+                        // }
+                        div = document.createElement('div');
+                        div.style.height = "30px";
+                        counter = 0;
+                        questions = document.querySelector(`.Q${j+1}`);
+                        questions.style.marginLeft = "30px";
+                        div.addEventListener('click', ()=>{
+                            alert(`
+                                Вопрос: ${questions_arr[j][0]}
+
+                                Варианты ответа:
+                                0) если человек переключил вкладку
+                                1) ${questions_arr[j][1] ? questions_arr[j][1] : '-'}
+                                2) ${questions_arr[j][2] ? questions_arr[j][2] : '-'}
+                                3) ${questions_arr[j][3] ? questions_arr[j][3] : '-'}
+                                4) ${questions_arr[j][4] ? questions_arr[j][4] : '-'}
+
+                                Правильный вариант ответа: ${right_str[j]}
+                                Выбранный варинт ответа: ${arr[i][3][j]}
+                            `);
+                        })
+                        if (arr[i][5]!=null){
+                            for (let k = 0; k < arr[i][5].length; k++){
+                                if ((j+1)==arr[i][5][k]){
+                                    counter++;
+                                }
+                            }
+                            if (counter==1){
+                                console.log('egor');
+                                div.textContent = "❌";
+                            }else{
+                                div.textContent = "✔";
+                            }
+                            questions.appendChild(div);
+                        }else{
+                            div.textContent = "✔";
+                            questions.appendChild(div);
+                        }
+
+                    }
+
+
+                }
+            })
+
+
+
+
+
+        })()
+    </script>
+</body>
+</html>

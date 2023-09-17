@@ -26,6 +26,17 @@ body {
     font-family: 'Comfortaa';
     font-weight: 100;
 }
+.answers {
+    font-size: 100px;
+    margin-top: 4%;
+    background-color: #69e547;
+    width: 80%;
+    height: 400px;
+    border-radius: 90px;
+    box-shadow: 20px 20px black;
+    font-family: 'Comfortaa';
+    font-weight: 100;
+}
 .enter {
     font-size: 100px;
     margin-top: 4%;
@@ -41,12 +52,15 @@ body {
 </head>
 <body>
     <button class="quiz">Решать квиз по коду</button><br>
+    <button class="answers">Посмотреть результаты</button>
+    <br>
     <button class="enter">Войти</button>
     
         
     <script>
         let quiz_btn = document.querySelector('.quiz');
         let enter_btn = document.querySelector('.enter');
+        let answers_btn = document.querySelector('.answers');
 
         quiz_btn.addEventListener('click', ()=>{
             window.location.replace("/do");
@@ -54,6 +68,10 @@ body {
 
         enter_btn.addEventListener('click', ()=>{
             window.location.replace("/login");
+        })
+
+        answers_btn.addEventListener('click', ()=>{
+            window.location.replace("/answers");
         })
     </script>
 </body>

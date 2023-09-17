@@ -4,15 +4,15 @@ const fs = require('fs');
 const path = require('path');
 const js_functions = require(path.join(__dirname, '../functions.js'));
 
-let session;
-
 
 router.get("/", function (req, res){
-    session = require(path.join(__dirname, 'user.js')).get_session();
-
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    var myReadStream = fs.createReadStream(path.join(__dirname, '../htmls', 'answers.html'), 'utf8');
-    myReadStream.pipe(res);
+    if (req.session){
+        if (req.session.userid){
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            var myReadStream = fs.createReadStream(path.join(__dirname, '../htmls', 'review.html'), 'utf8');
+            myReadStream.pipe(res);
+        }
+    }
 
 })
 

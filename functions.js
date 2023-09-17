@@ -229,12 +229,40 @@ function get_answers(res, num_quiz){
                 });
         })
     }).then(()=>{
-        return new Promise(function (resolve, reject) {
-            end_arr = queryDatabase(str_arr, num_quiz);
-            resolve(end_arr);
+        return new Promise(async function (resolve, reject) {
+            end_arr = await queryDatabase(str_arr, num_quiz);
+            resolve();
         })
-    }).then((end_arr)=>{
-        res.send({arr: end_arr, counter:counter});
+    }).then(()=>{
+        return new Promise(function (resolve, reject){
+            const query2 = `select * from questions where num_quiz=${num_quiz} ORDER BY num_question ASC`;
+            pool.query(query2)
+                .then(res => {
+                    const rows = res.rows;
+                    console.log("NUM QUIZ = ", num_quiz);
+                    rows.map(row => {
+                        console.log(`Read: ${JSON.stringify(row)}`);
+                    });
+
+                    let arr2 = [];
+
+                    for (let i = 0; i < res.rows.length; i++){
+                        arr2.push([res.rows[i]["question"], res.rows[i]["ans1"], res.rows[i]["ans2"], res.rows[i]["ans3"], res.rows[i]["ans4"]]);
+                        //arr2.push(1);
+                    }
+
+                    console.log("ARRRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!");
+                    console.log(arr2);
+
+                    resolve(arr2);
+
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        })
+    }).then((arr2)=>{
+        res.send({arr: end_arr, counter:counter, questions: arr2, right_str: str_arr});
     })
 }
 

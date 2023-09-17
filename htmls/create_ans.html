@@ -36,7 +36,8 @@
 <!--  <h1 class="name_h1"></h1>-->
   <button class="answers">Посмотреть результаты квиза по коду</button>
   <button class="create">Создать новый квиз</button><br>
-    <button class="open">Управление квизами</button>
+  <button class="open">Управление квизами</button>
+  <button class="review">Обзор</button>
   
 
   <script>
@@ -45,6 +46,7 @@
     let create_btn = document.querySelector('.create');
     let answers_btn = document.querySelector('.answers');
     let open_btn = document.querySelector('.open');
+    let review_btn = document.querySelector('.review');
 
     create_btn.addEventListener('click', ()=>{
       window.location.replace("/create");
@@ -56,6 +58,10 @@
 
     open_btn.addEventListener('click', ()=>{
         window.location.replace("/settings");
+    })
+
+    review_btn.addEventListener('click', ()=>{
+        window.location.replace("/review");
     })
 
   </script>

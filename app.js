@@ -47,6 +47,7 @@ const loginRoutes = require(path.join(__dirname, './routes/login.js'));
 let userRoutes = require(path.join(__dirname, './routes/user.js'));
 const errorsRoutes = require(path.join(__dirname, './routes/errors.js'));
 const quiz_settings = require(path.join(__dirname, './routes/quiz_settings.js'));
+const review = require(path.join(__dirname, './routes/review.js'));
 userRoutes = userRoutes.router;
 //Подключаем роуты
 
@@ -63,6 +64,7 @@ app.use('/login', loginRoutes);
 app.use('/user', userRoutes);
 app.use('/logs', errorsRoutes);
 app.use('/settings', quiz_settings);
+app.use('/review', review);
 //Использование подключенных роутов
 
 
