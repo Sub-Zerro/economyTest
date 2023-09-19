@@ -24,3 +24,11 @@ the requested quiz is not available
  
 the requested quiz is not available 
  
+the requested quiz is not available 
+ 
+the requested quiz is not available 
+ 
+the requested quiz is not available 
+ 
+error: syntax error at or near "by" 
+ 

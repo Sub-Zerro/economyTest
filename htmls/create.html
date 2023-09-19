@@ -99,12 +99,14 @@
     <input type="text" id="last_input">
     <br>
     <button class="add">Добавить вопрос</button><br>
+    <button class="check">Посмотреть вопросы</button><br>
     <button class="end">Закончить и отправить</button>
 
     <script>
         let inputs = document.querySelectorAll('input');
         let btn = document.querySelector('.add');
         let end_btn = document.querySelector('.end');
+        let check_btn = document.querySelector('.check');
         let right_str = '';
         let arr = [];
 
@@ -121,7 +123,7 @@
                 ]);
                 right_str += `${inputs[5].value}`;
 
-                await add_div(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value);
+                //await add_div(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value);
 
                 console.log(arr);
                 console.log(right_str);
@@ -137,6 +139,27 @@
             send_to_server(arr, right_str);
         })
 
+        check_btn.addEventListener('click', ()=>{
+            let str = '';
+            for (let i = 0; i < arr.length; i++){
+                str += `
+                    Вопрос: ${arr[i][0]}
+                    |
+                    Варианты ответа:
+                    1) ${arr[i][1]}
+                    2) ${arr[i][2]}
+                    3) ${arr[i][3] ? arr[i][3] : '-'}
+                    3) ${arr[i][4] ? arr[i][4] : '-'}
+                    |
+                    Праильный ваант ответа: ${arr[i][5]}
+
+
+
+                `
+            }
+
+            alert(str);
+        })
 
 
 

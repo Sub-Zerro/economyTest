@@ -37,7 +37,7 @@ router.post("/", function (req, res) {
     (async ()=>{
         let num_quiz = await js_functions.set_new_quiz(arr, str, req.session.userid);
 
-        const query = `select num_quiz from right_strs`;
+        const query = `select num_quiz from right_strs order by num_quiz ASC`;
 
         let last_num;
 
@@ -57,7 +57,6 @@ router.post("/", function (req, res) {
                     }
                 }
 
-                last_num++;
             })
             .catch(err => {
                 js_functions.add_err(err);
