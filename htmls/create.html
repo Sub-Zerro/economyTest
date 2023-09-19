@@ -17,7 +17,7 @@
         margin-left: auto;
         margin-right: auto;   
     }
-    h1, h2, input, button {
+    h1, input, button, #que {
         box-shadow: 10px 10px black;
     }
     h1 {
@@ -36,6 +36,10 @@
         background-color: #edcb51;
         display: flex;
         font-size: 40px;
+        z-index: 2;
+        position: relative;
+        width: 50.5%;
+
     }
     body {
         text-align: center;
@@ -46,18 +50,29 @@
         background-color: #38b943;
         border-radius: 10px;
         height: 100px;
-        width: 400px;
-        border-radius: 20px;
+        width: 50%;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
         outline: 0 !important;
-    }
-    #last_input {
-        height: 30px;
+        margin-top: -15%;
+        z-index: 1;
+        position: relative;
+        font-size: 30px;
     }
     #que {
         background-color: #299dcf;
+        margin-bottom: 75px;
     }
     #q_i {
         background-color: #38b943;
+        border-radius: 20px;
+        margin-bottom: 50px;
+    }
+    .qu {
+        box-shadow: 10px 0px black;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        width: 50.2%;
     }
     button {
         background-color: #e57747;
@@ -79,6 +94,9 @@
         float: left;
         margin-top: 0px;
     }
+    .check {
+
+    }
 </style>
 </head>
 <body>
@@ -87,19 +105,19 @@
 
     <h2 id="que">Вопрос</h2>
     <input type="text" id="q_i">
-    <h2>Вариант ответа 1</h2>
+    <h2 class="qu">Вариант ответа 1</h2>
     <input type="text">
-    <h2>Вариант ответа 2</h2>
+    <h2 class="qu">Вариант ответа 2</h2>
     <input type="text">
-    <h2>Вариант ответа 3</h2>
+    <h2 class="qu">Вариант ответа 3</h2>
     <input type="text">
-    <h2>Вариант ответа 4</h2>
+    <h2 class="qu">Вариант ответа 4</h2>
     <input type="text">
-    <h2>Порядковый номер правильного ответа</h2>
+    <h2 class="qu">Порядковый номер правильного ответа</h2>
     <input type="text" id="last_input">
     <br>
-    <button class="add">Добавить вопрос</button><br>
-    <button class="check">Посмотреть вопросы</button><br>
+    <button class="add">Добавить вопрос</button>
+    <button class="check">Посмотреть вопросы</button>
     <button class="end">Закончить и отправить</button>
 
     <script>
