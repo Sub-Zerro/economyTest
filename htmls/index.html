@@ -98,7 +98,12 @@ body {
 
     getName();
 
-    function showQ(numQ, obj, num_quiz_f){
+    async function showQ(numQ, obj, num_quiz_f){
+
+      if (number_of_q == 0){
+        await alert('Тест без таймера, все задания оцениваются одинаково. Задача - нажать на вариант ответа, который считаешь правильным')
+        alert("В тесте работает система против нечестных учеников, не выключайте экран и не переключайте вкладки");
+      }
 
       console.log("scopestr = ", scope_str);
 
@@ -214,7 +219,7 @@ body {
       }else{
         return name;
       }
-      alert('Тест без таймера, все задания оцениваются одинаково. Задача - нажать на вариант ответа, который считаешь правильным')
+
     }
 
     function get_num_quiz(numQ){
