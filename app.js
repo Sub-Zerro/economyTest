@@ -51,7 +51,7 @@ const review = require(path.join(__dirname, './routes/review.js'));
 userRoutes = userRoutes.router;
 //Подключаем роуты
 
-
+app.use(express.static(path.join(__dirname + '/css')));
 app.use(express.json());
 app.use(express.urlencoded());
 //Для чтения файловпри get запросах ниже

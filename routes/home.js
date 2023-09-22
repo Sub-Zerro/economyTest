@@ -5,6 +5,8 @@ const path = require('path');
 const js_functions = require(path.join(__dirname, '../functions.js'));
 
 
+
+
 router.get('/', function(req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     var myReadStream = fs.createReadStream(path.join(__dirname, '../htmls', 'home.html'), 'utf8');

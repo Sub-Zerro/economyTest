@@ -1,0 +1,36 @@
+.main{
+    display: flex;
+    flex-direction: row;
+}
+
+.questions{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.player{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.date{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.prosent{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.count{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
