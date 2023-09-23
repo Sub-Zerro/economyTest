@@ -14,11 +14,11 @@ body {
 }
 input {
     margin-top: 40px;
-    height: 400px;
-    width: 400px;
+    height: 80px;
+    width: 50%;
     border-radius: 30px;
     box-shadow: 15px 20px black;
-    font-size: 45px;
+    font-size: 25px;
     transition: 0.5s;
 
 }
@@ -30,7 +30,7 @@ input {
 .pass {
     background-color: #38b943;
     float: left;
-    margin-left: 5%;
+    margin-left: 25%;
 }
 .check {
     background-color: white;
