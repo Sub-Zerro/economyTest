@@ -67,7 +67,7 @@ router.post("/", function (req, res) {
 
         console.log("lastnum = ", last_num);
 
-        res.send({otv: last_num});
+        res.send({otv: last_num+1});
     })()
 })
 

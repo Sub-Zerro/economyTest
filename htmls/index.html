@@ -61,49 +61,148 @@
 
       let arr = obj.arr;
 
-      // for(let i = 0; i < arr.length; i++){
-      //   console.log(arr[i]);
-      // }
+      if (arr[numQ].length == 2){
+        console.log("HEY!");
+
+        let textarea = document.querySelector('.textarea');
+        textarea.textContent = arr[numQ][0];
+
+        let input = document.createElement("input");
+        document.body.appendChild(input);
+
+        let send_btn = document.createElement("button");
+        send_btn.textContent = "Ответить";
+        document.body.appendChild(send_btn);
+
+        let buttons = document.querySelectorAll("button");
+        for (let i = 0; i < buttons.length; i++){
+          if (i!=(buttons.length-1)){
+            buttons[i].style.display= "none";
+          }
+        }
+
+        send_btn.addEventListener('click', ()=>{
+          scope_str+=`${input.value};`;
+
+          document.body.removeChild(input);
+          document.body.removeChild(send_btn);
+
+          let now_length = scope_str.split(";");
+
+              if (now_length.length==(number_of_q+2)){
+                if (number_of_q < (arr.length-1)){
+                  number_of_q++;
+                  showQ(number_of_q, obj, num_quiz_f);
+                }else{
+
+                  (async ()=>{
+
+                    date = new Date();
+                    year = date.getFullYear();
+                    let month = date.getMonth();
+                    month++;
+                    let day = date.getDate();
+                    let hour = date.getHours();
+                    let minutes = date.getMinutes();
+
+                    dateobj.finish = {
+                      year: year,
+                      month: month,
+                      day: day,
+                      hour: hour,
+                      minutes: minutes
+                    }
 
 
-      let textarea = document.querySelector('.textarea');
-      let buttons = document.querySelectorAll('button');
+                    await fetch("/", {
+                      method: "post",
+                      headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        name: name,
+                        answer: scope_str,
+                        num_quiz: num_quiz_f,
+                        used_time: dateobj
+                      })
+                    }).then((res)=>{
+                      res.json().then(async (res_end)=>{
+                        await alert("Ответ записан, вкладку можно закрывать");
+                        window.location.replace('/');
+                      })
+                    })
+                  })()
+                }
+              }
+
+        })
+
+      }else if (arr[numQ][1] == "roma"){
+        let buttons = document.querySelectorAll("button");
+        for (let i = 0; i < buttons.length; i++){
+          if (i!=(buttons.length)){
+            buttons[i].style.display= "none";
+          }
+        }
 
 
-      textarea.textContent = arr[numQ][0];
+        let textarea = document.querySelector('.textarea');
+        textarea.textContent = arr[numQ][0];
+        document.body.appendChild(textarea);
 
-      for (let i = 0; i < buttons.length; i++){
-        buttons[i].style.display = 'inline';
-      }
+        let input_text;
+        let input;
+        let br;
+        let send_btn = document.createElement("button");
+        send_btn.textContent = "Ответить";
 
-      if (arr[numQ][1] != ''){
-        buttons[0].textContent = arr[numQ][1];
-      }else{
-        buttons[0].style.display = 'none'
-      }
-      if (arr[numQ][2] != ''){
-        buttons[1].textContent = arr[numQ][2];
-      }else{
-        buttons[1].style.display = 'none'
-      }
-
-      if (arr[numQ][3] != ''){
-        buttons[2].textContent = arr[numQ][3];
-      }else{
-        buttons[2].style.display = 'none'
-      }
-
-      if (arr[numQ][4] != ''){
-        buttons[3].textContent = arr[numQ][4];
-      }else{
-        buttons[3].style.display = 'none'
-      }
+        function nigger(){
+          for (let i = 0; i < 5; i++){
+            br = document.createElement("br");
+            document.body.appendChild(br);
+          }
+        }
 
 
-      for(let i = 0; i < buttons.length; i++){
-        buttons[i].onclick = (()=>{
-          scope_str+=`${i+1}`;
-          if (scope_str.length==(number_of_q+1)){
+        for (let i = 0; i < arr[numQ].length; i++){
+          if (i>1){
+            input_text = document.createElement("h3");
+            input_text.textContent = `${arr[numQ][i]}`;
+            input = document.createElement("input");
+
+            document.body.appendChild(input_text);
+            document.body.appendChild(input);
+            nigger();
+          }
+        }
+
+        document.body.appendChild(send_btn);
+
+        send_btn.addEventListener('click', ()=>{
+          let inputs = document.querySelectorAll("input");
+          let text_inputs = document.querySelectorAll("h3");
+          let temp_str = "";
+          for (let i = 0; i < inputs.length; i++){
+            if (i!=inputs.length-1){
+              temp_str+=`${inputs[i].value},`;
+            }else{
+              temp_str+=`${inputs[i].value};`;
+            }
+          }
+
+          scope_str+=temp_str;
+
+          for(let i = 0; i < inputs.length; i++){
+            document.body.removeChild(inputs[i]);
+            document.body.removeChild(text_inputs[i]);
+          }
+
+          document.body.removeChild(send_btn);
+
+          let now_length = scope_str.split(";");
+
+          if (now_length.length==(number_of_q+2)){
             if (number_of_q < (arr.length-1)){
               number_of_q++;
               showQ(number_of_q, obj, num_quiz_f);
@@ -146,20 +245,106 @@
                     window.location.replace('/');
                   })
                 })
-
-
               })()
-
-
-
-
-
-
             }
           }
         })
 
+      }else{
+        let textarea = document.querySelector('.textarea');
+        let buttons = document.querySelectorAll('button');
+
+
+        textarea.textContent = arr[numQ][0];
+
+        for (let i = 0; i < buttons.length; i++){
+          buttons[i].style.display = 'inline';
+        }
+
+        if (arr[numQ][1] != ''){
+          buttons[0].textContent = arr[numQ][1];
+        }else{
+          buttons[0].style.display = 'none'
+        }
+        if (arr[numQ][2] != ''){
+          buttons[1].textContent = arr[numQ][2];
+        }else{
+          buttons[1].style.display = 'none'
+        }
+
+        if (arr[numQ][3] != ''){
+          buttons[2].textContent = arr[numQ][3];
+        }else{
+          buttons[2].style.display = 'none'
+        }
+
+        if (arr[numQ][4] != ''){
+          buttons[3].textContent = arr[numQ][4];
+        }else{
+          buttons[3].style.display = 'none'
+        }
+
+
+        for(let i = 0; i < buttons.length; i++){
+          buttons[i].onclick = (()=>{
+            scope_str+=`${i+1};`;
+
+            let now_length = scope_str.split(";");
+
+            if (now_length.length==(number_of_q+2)){
+              if (number_of_q < (arr.length-1)){
+                number_of_q++;
+                showQ(number_of_q, obj, num_quiz_f);
+              }else{
+
+                (async ()=>{
+
+                  date = new Date();
+                  year = date.getFullYear();
+                  let month = date.getMonth();
+                  month++;
+                  let day = date.getDate();
+                  let hour = date.getHours();
+                  let minutes = date.getMinutes();
+
+                  dateobj.finish = {
+                    year: year,
+                    month: month,
+                    day: day,
+                    hour: hour,
+                    minutes: minutes
+                  }
+
+
+                  await fetch("/", {
+                    method: "post",
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      name: name,
+                      answer: scope_str,
+                      num_quiz: num_quiz_f,
+                      used_time: dateobj
+                    })
+                  }).then((res)=>{
+                    res.json().then(async (res_end)=>{
+                      await alert("Ответ записан, вкладку можно закрывать");
+                      window.location.replace('/');
+                    })
+                  })
+                })()
+              }
+            }
+          })
+        }
+
       }
+
+
+
+
 
 
     }
@@ -198,6 +383,18 @@
               })()
             }else{
               my_obj = res_end;
+              console.log("my_obj = ", my_obj);
+
+              let temp = [];
+              for (let i = 0; i < my_obj.arr.length; i++){
+                temp = [];
+                temp = my_obj.arr[i][1].split(',');
+                my_obj.arr[i].pop();
+                for (let k = 0; k < temp.length; k++){
+                  my_obj.arr[i].push(temp[k]);
+                }
+              }
+
               num_quiz_for_save = res_end.num_quiz;
               showQ(numQ, res_end, res_end.num_quiz);
             }

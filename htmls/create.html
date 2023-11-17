@@ -100,55 +100,254 @@
 </style>
 </head>
 <body>
-    <h1>Создание нового теста. Заполните поля, если есть лишний ответ - просто оставьте его пустым</h1>
+    <h1>Создание нового теста</h1>
 
 
-    <h2 id="que">Вопрос</h2>
-    <input type="text" id="q_i">
-    <h2 class="qu">Вариант ответа 1</h2>
-    <input type="text">
-    <h2 class="qu">Вариант ответа 2</h2>
-    <input type="text">
-    <h2 class="qu">Вариант ответа 3</h2>
-    <input type="text">
-    <h2 class="qu">Вариант ответа 4</h2>
-    <input type="text">
-    <h2 class="qu">Порядковый номер правильного ответа</h2>
-    <input type="text" id="last_input">
+<!--    <h2 id="que">Вопрос</h2>-->
+<!--    <input type="text" id="q_i">-->
+<!--    <h2 class="qu">Вариант ответа 1</h2>-->
+<!--    <input type="text">-->
+<!--    <h2 class="qu">Вариант ответа 2</h2>-->
+<!--    <input type="text">-->
+<!--    <h2 class="qu">Вариант ответа 3</h2>-->
+<!--    <input type="text">-->
+<!--    <h2 class="qu">Вариант ответа 4</h2>-->
+<!--    <input type="text">-->
+<!--    <h2 class="qu">Порядковый номер правильного ответа</h2>-->
+<!--    <input type="text" id="last_input">-->
+    <button class="default_q">Вопрос с вариантами ответов</button>
+    <button class="open_q">Открытый вопрос</button>
+    <button class="posled_q">Вопрос на установление последовательностей</button>
     <br>
     <button class="add">Добавить вопрос</button>
     <button class="check">Посмотреть вопросы</button>
     <button class="end">Закончить и отправить</button>
 
     <script>
+        let default_q_btn = document.querySelector('.default_q');
+        let open_q_btn = document.querySelector('.open_q');
+        let posled_q_btn = document.querySelector('.posled_q');
+
         let inputs = document.querySelectorAll('input');
         let btn = document.querySelector('.add');
         let end_btn = document.querySelector('.end');
         let check_btn = document.querySelector('.check');
         let right_str = '';
+        let type_of_question_now = 0;
         let arr = [];
+
+        let div;
+
+        default_q_btn.addEventListener('click', ()=>{
+            type_of_question_now = 1;
+
+            let question_input = document.createElement("input");
+            let question_h = document.createElement("h2");
+            question_h.textContent = "Вопрос";
+            let input;
+            let h;
+
+            let right_h = document.createElement("h2");
+            right_h.textContent = "Вариант правильного ответа";
+            let br = document.createElement("br");
+            let br2 = document.createElement("br");
+            let rigth_ans = document.createElement("input");
+            let number_q = 0;
+            let add_btn = document.createElement("button");
+
+            div = document.createElement('div');
+
+            div.appendChild(question_h);
+            div.appendChild(question_input);
+            div.appendChild(br2);
+
+
+            add_btn.addEventListener('click', ()=>{
+                add_q_default(h, input, div, add_btn, number_q);
+            })
+
+            for (let i = 0; i < 2; i++){
+                add_q_default(h, input, div, add_btn, number_q);
+            }
+
+            function add_q_default(h, input, div, add_btn, i){
+                h = document.createElement('h2');
+                input = document.createElement('input');
+
+
+
+                h.textContent = `Вариант ответа ${i+1}`;
+                add_btn.textContent = "Добавить вариант ответа";
+
+
+
+                div.appendChild(h);
+                div.appendChild(input);
+                div.appendChild(right_h);
+                div.appendChild(rigth_ans);
+                div.appendChild(br);
+                div.appendChild(add_btn);
+
+                document.body.appendChild(div);
+
+                number_q++;
+            }
+        })
+
+        open_q_btn.addEventListener('click', ()=>{
+            type_of_question_now = 2;
+
+            console.log(1);
+            div = document.createElement("div");
+
+            let question_input = document.createElement("input");
+            let question_h = document.createElement("h2");
+            question_h.textContent = "Вопрос";
+
+            let right_h     = document.createElement("h2");
+            right_h.textContent = "Правильный ответ(строка)";
+            let right_str = document.createElement("input");
+
+            div.appendChild(question_h);
+            div.appendChild(question_input);
+
+            div.appendChild(right_h);
+            div.appendChild(right_str);
+
+            document.body.appendChild(div);
+        })
+
+        posled_q_btn.addEventListener('click', ()=>{
+            type_of_question_now = 3;
+
+            function add_br(){
+                br = document.createElement("br");
+                div.appendChild(br);
+            }
+
+            let question_input = document.createElement("input");
+            let question_h = document.createElement("h2");
+            question_h.textContent = "Вопрос";
+            let input;
+            let h;
+
+            let right_inp = document.createElement("input");
+            let br = document.createElement("br");
+            let br2 = document.createElement("br");
+            let number_q = 0;
+            let add_btn = document.createElement("button");
+
+            div = document.createElement('div');
+
+            div.appendChild(question_h);
+            div.appendChild(question_input);
+            for (let i = 0; i < 7; i++){
+                add_br();
+            }
+
+
+
+            add_btn.addEventListener('click', ()=>{
+                add_q_default(h, input, div, add_btn, number_q);
+            })
+
+            for (let i = 0; i < 2; i++){
+                add_q_default(h, input, div, add_btn, number_q);
+            }
+
+            function add_q_default(h, input, div, add_btn, i) {
+                br = document.createElement('br');
+                right_inp = document.createElement('input');
+                input = document.createElement('input');
+
+
+                add_btn.textContent = "Добавить вариант ответа";
+
+
+
+                div.appendChild(input);
+                for (let i = 0; i < 4; i++){
+                    add_br();
+                }
+                div.appendChild(right_inp);
+
+
+
+                for (let i = 0; i < 7; i++){
+                    add_br();
+                }
+
+                div.appendChild(add_btn);
+
+
+
+                document.body.appendChild(div);
+            }
+        })
+
+
 
 
         btn.addEventListener('click', ()=>{
             (async ()=>{
-                await arr.push([
-                    inputs[0].value,
-                    inputs[1].value,
-                    inputs[2].value,
-                    inputs[3].value,
-                    inputs[4].value,
-                    inputs[5].value
-                ]);
-                right_str += `${inputs[5].value}`;
 
-                //await add_div(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value);
+                if (type_of_question_now != 3){
+                    inputs = document.querySelectorAll("input");
+                    let temp_arr = [];
+                    let right_value = (inputs.length - 1);
 
-                console.log(arr);
-                console.log(right_str);
 
-                for(let i = 0; i < inputs.length; i++){
-                    inputs[i].value = '';
+                    for (let i = 0; i < inputs.length; i++){
+                        if (i!=(inputs.length-1)){
+                            temp_arr.push(inputs[i].value);
+                        }
+                    }
+
+                    arr.push(temp_arr);
+
+
+                    if (type_of_question_now == 1){
+                        right_str += `${inputs[inputs.length-1].value};`;
+                    }else if (type_of_question_now == 2){
+                        right_str += `${inputs[1].value};`;
+                    }
+
+
+                }else{
+                    let temp_str = '';
+                    let inputs = document.querySelectorAll("input");
+
+                    let temparr = [];
+
+                    temparr.push(inputs[0].value);
+
+                    temparr.push("roma");
+
+                    for (let i = 1; i < inputs.length; i++){
+                        if (i%2!=0){
+                            temparr.push(inputs[i].value);
+                        }else{
+                            if (i == inputs.length-1){
+                                temp_str+=`${inputs[i].value};`;
+                            }else{
+                                temp_str+=`${inputs[i].value},`;
+                            }
+                        }
+                    }
+
+                    arr.push(temparr);
+
+                    right_str += temp_str;
+
+
+
+
                 }
+                console.log(right_str);
+                console.log(arr);
+                document.body.removeChild(div);
+
+
             })()
 
         })
@@ -160,20 +359,29 @@
         check_btn.addEventListener('click', ()=>{
             let str = '';
             for (let i = 0; i < arr.length; i++){
+                // str += `
+                //     Вопрос: ${arr[i][0]}
+                //     |
+                //     Варианты ответа:
+                //     1) ${arr[i][1]}
+                //     2) ${arr[i][2]}
+                //     3) ${arr[i][3] ? arr[i][3] : '-'}
+                //     3) ${arr[i][4] ? arr[i][4] : '-'}
+                //     |
+                //     Праильный вариант ответа: ${arr[i][5]}
+                // `
+
                 str += `
                     Вопрос: ${arr[i][0]}
                     |
                     Варианты ответа:
-                    1) ${arr[i][1]}
-                    2) ${arr[i][2]}
-                    3) ${arr[i][3] ? arr[i][3] : '-'}
-                    3) ${arr[i][4] ? arr[i][4] : '-'}
-                    |
-                    Праильный вариант ответа: ${arr[i][5]}
-
-
-
                 `
+
+                for (let k = 1; k < arr[i].length; k++){
+                    str+=`
+                        ${k}) ${arr[i][k] ? arr[i][k] : '-'}
+                    `;
+                }
             }
 
             alert(str);

@@ -40,7 +40,7 @@
             })
         }).then((res)=>{
             res.json().then((end_res)=>{
-
+                console.log(end_res.right_str);
                 let arr = end_res.arr;
                 console.log(arr);
                 let temp;
@@ -59,7 +59,7 @@
                 }
                 //console.log(arr);
 
-                let delitel = arr[0][1].length;
+                let delitel = (end_res.right_str.length-1);
                 let div;
                 let number;
                 let p;
@@ -96,14 +96,14 @@
                     p.appendChild(user_name);
 
                     count_of_balls = document.createElement("div");
-                    count_of_balls.textContent = `${arr[i][4]} баллов из ${arr[i][1].length}`;
+                    count_of_balls.textContent = `${arr[i][4]-1} баллов из ${(arr[i][3]).length-1}`;
                     count_of_balls.style.width = "100px";
                     count_of_balls.style.borderStyle = "double";
                     count_of_balls.className = 'cb';
                     p.appendChild(count_of_balls);
 
                     prosent = document.createElement("div");
-                    prosent.textContent = `${Math.round((100/delitel)*arr[i][4])} %`;
+                    prosent.textContent = `${Math.round((100*(arr[i][4]-1))/delitel)} %`;
                     prosent.style.width = "50px";
                     prosent.style.borderStyle = "double";
                     prosent.className = 'pro';

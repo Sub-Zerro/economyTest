@@ -51,7 +51,7 @@ router.post("/", function (req, res){
     }).then(()=>{
         new Promise(function (resolve, reject) {
             (async ()=>{
-                const query = `select * from questions where num_quiz=${req.body.num} order by num_question asc`;
+                const query = `select * from questions2 where num_quiz=${req.body.num} order by num_question asc`;
                 await pool.query(query)
                     .then(res => {
                         const rows = res.rows;
@@ -61,7 +61,7 @@ router.post("/", function (req, res){
                         });
 
                         for(let i = 0; i < res.rows.length; i++){
-                            arr.push([res.rows[i]["question"], res.rows[i]["ans1"], res.rows[i]["ans2"], res.rows[i]["ans3"], res.rows[i]["ans4"]]);
+                            arr.push([res.rows[i]["question"], res.rows[i]["answers"]]);
                         }
 
                         obj.arr = arr;
@@ -71,7 +71,7 @@ router.post("/", function (req, res){
                         reject(err);
                     });
 
-                const query2 = `select str from right_strs where num_quiz=${req.body.num}`;
+                const query2 = `select str from right_strs2 where num_quiz=${req.body.num}`;
                 await pool.query(query2)
                     .then(res => {
                         const rows = res.rows;

@@ -43,10 +43,32 @@ async function queryDatabase(str_arr, num_quiz) {
             console.log(err);
         });
 
-
+    let temp_arr = [];
+    let temp;
+    let dop_arr = [];
+    let now_arr;
     for(let i = 0; i<arr.length; i++){
-        arr[i].push(arr[i][1].split(''))
+        dop_arr = [];
+
+
+        now_arr = arr[i][1].split(";");
+        for (let p = 0; p < now_arr.length; p++){
+            if (now_arr[p].length >= 3){
+                temp_arr = now_arr[p].split(",");
+
+                for (let z = 0; z < temp_arr.length; z++){
+                    dop_arr.push(temp_arr[z]);
+                }
+            }else{
+                dop_arr.push(now_arr[p]);
+            }
+        }
+
+        console.log("dop_arr = ", dop_arr);
+        arr[i].push(dop_arr);
     }
+
+
     console.log(arr)
 
     for(let i = 0; i<arr.length; i++){
@@ -67,7 +89,7 @@ async function queryDatabase(str_arr, num_quiz) {
         let counter = 0;
         let push_arr = [];
         for (let k = 0; k < arr[i][3].length; k++){
-            if (arr[i][1][k] != str_arr[k]){
+            if (arr[i][3][k] != str_arr[k]){
                 push_arr.push(k+1);
                 counter++;
             }
@@ -79,7 +101,7 @@ async function queryDatabase(str_arr, num_quiz) {
         }
     }
 
-    console.log(arr)
+    console.log("ROMA", arr);
     return arr;
 }
 
@@ -114,10 +136,22 @@ async function set_new_quiz(arr, str, author){
         //console.log(last_num);
         return new Promise(function (resolve, reject) {
             let now_num_quiz = last_num+1;
+            let answers = "";
 
             for (let i = 0; i < arr.length; i++){
+                answers = "";
+                for (let k = 0; k < arr[i].length; k++){
+                    if (k!=0){
+                        if (k==1){
+                            answers += `${arr[i][k]}`;
+                        }else{
+                            answers += `,${arr[i][k]}`;
+                        }
+                    }
+                }
+
                 pool.query(`
-            INSERT INTO questions(num_quiz, num_question, question, ans1, ans2, ans3, ans4, author)values('${now_num_quiz}', '${i+1}', '${arr[i][0]}', '${arr[i][1]}', '${arr[i][2]}', '${arr[i][3]}', '${arr[i][4]}', '${author}');
+            INSERT INTO questions2(num_quiz, num_question, question, answers, author)values('${now_num_quiz}', '${i+1}', '${arr[i][0]}', '${answers}', '${author}');
             `, (err, res) => {
                     console.log(err, res);
                 })
@@ -128,22 +162,12 @@ async function set_new_quiz(arr, str, author){
     }).then((now_num_quiz)=>{
         return new Promise(function (resolve, reject) {
             pool.query(`
-            INSERT INTO right_strs(num_quiz, str)values('${now_num_quiz}', '${str}');
+            INSERT INTO right_strs2(num_quiz, str)values('${now_num_quiz}', '${str}');
             `, (err, res) => {
                 console.log(err, res);
             })
             resolve(now_num_quiz);
         })
-    }).then((now_num_quiz)=>{
-        return new Promise(async function (resolve, reject){
-            // await pool.query(`
-            // INSERT INTO status(num_quiz, st)values('${now_num_quiz}', 0);
-            // `, (err, res) => {
-            //     console.log(err, res);
-            // })
-            resolve(now_num_quiz);
-        })
-
     }).then((now_num_quiz)=>{
         return now_num_quiz;
     })
@@ -184,7 +208,7 @@ function get_answers(res, num_quiz){
             });
     }).then(()=>{
         return new Promise(function (resolve, reject) {
-            const query2 = `select str from right_strs where num_quiz=${num_quiz}`;
+            const query2 = `select str from right_strs2 where num_quiz=${num_quiz}`;
             pool.query(query2)
                 .then(res => {
                     const rows = res.rows;
@@ -196,30 +220,30 @@ function get_answers(res, num_quiz){
                     str = res.rows[0]["str"];
 
 
-                    str_arr = Array.from(str) ;
+                    //str_arr = str.split(";");
+
+                    let temp_arr = [];
+                    let temp;
+                    let dop_arr = [];
+                    let now_arr;
+
+                        now_arr = str.split(";");
+                        for (let p = 0; p < now_arr.length; p++) {
+                            if (now_arr[p].length >= 3) {
+                                temp_arr = now_arr[p].split(",");
+
+                                for (let z = 0; z < temp_arr.length; z++) {
+                                    dop_arr.push(temp_arr[z]);
+                                }
+                            } else {
+                                dop_arr.push(now_arr[p]);
+                            }
+                        }
+
+                        str_arr = dop_arr;
 
                     console.log("THIS");
                     console.log(str_arr);
-
-                    resolve();
-
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        })
-    }).then(()=>{
-        return new Promise(function (resolve, reject) {
-            const query2 = `select counter from status where num_quiz=${num_quiz}`;
-            pool.query(query2)
-                .then(res => {
-                    const rows = res.rows;
-
-                    rows.map(row => {
-                        console.log(`Read: ${JSON.stringify(row)}`);
-                    });
-
-                    counter = res.rows[0]["counter"];
 
                     resolve();
 
@@ -247,7 +271,7 @@ function get_answers(res, num_quiz){
                     let arr2 = [];
 
                     for (let i = 0; i < res.rows.length; i++){
-                        arr2.push([res.rows[i]["question"], res.rows[i]["ans1"], res.rows[i]["ans2"], res.rows[i]["ans3"], res.rows[i]["ans4"]]);
+                        arr2.push([res.rows[i]["question"], res.rows[i]["answers"]]);
                         //arr2.push(1);
                     }
 
@@ -262,7 +286,7 @@ function get_answers(res, num_quiz){
                 });
         })
     }).then((arr2)=>{
-        res.send({arr: end_arr, counter:counter, questions: arr2, right_str: str_arr});
+        res.send({arr: end_arr, questions: arr2, right_str: str_arr});
     })
 }
 
@@ -303,7 +327,7 @@ async function check_settings(name){
 }
 
 async function change_settings(num_quiz, value){
-    const query2 = `UPDATE status SET st=${value}, counter = counter+1 WHERE num_quiz=${num_quiz}`;
+    const query2 = `UPDATE status SET st=${value} WHERE num_quiz=${num_quiz}`;
     //const query2 = `select st from status`;
 
     await pool.query(query2)
