@@ -7,10 +7,12 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "pg": "^8.11.1"
+    "pg": "^8.11.1",
+    "preline": "^2.0.2"
   },
   "scripts": {
     "start": "node app.js",
+    "tailwind": "npx tailwindcss -i ./input.css -o ./css/output.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/Sub-Zerro/economyTest/issues"
   },
-  "homepage": "https://github.com/Sub-Zerro/economyTest#readme"
+  "homepage": "https://github.com/Sub-Zerro/economyTest#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.3.5"
+  }
 }

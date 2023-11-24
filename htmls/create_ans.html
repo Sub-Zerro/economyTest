@@ -6,16 +6,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="create_ans.css">
+    <link rel="stylesheet" href="../css/output.css">
 </head>
-<body>
+<body class="bg-teal-900 flex justify-center items-center flex-col">
 <!--  <h1 class="name_h1"></h1>-->
-  <button class="answers">Посмотреть результаты квиза по коду</button>
-  <button class="create">Создать новый квиз</button><br>
-  <button class="open">Управление квизами</button>
-  <button class="review">Обзор</button>
+  <h1 class="text-7xl font-bold font-['Comfortaa'] mt-[30%] bg-green-200 py-[5%] rounded-[5px] px-4 w-[80%] items-center justify-center inline-flex">Главное меню</h1>
+  <button class="font-['Comfortaa'] text-slate-950 shadow-2xl text-5xl mt-[40%] py-3 w-[80%] px-20 inline-flex items-center gap-x-2 text-sm  rounded-[55px] bg-slate-50 text-white">Посмотреть результаты квиза по коду</button>
+  <button class="font-['Comfortaa'] text-5xl mt-[15%] py-3 w-[80%] h-[120px] px-20 inline-flex items-center gap-x-2 text-sm  rounded-[55px] bg-teal-500 justify-center">Создать новый квиз</button><br>
+  <button class="font-['Comfortaa'] text-5xl mt-[15%] py-3 w-[80%] h-[120px] px-20 inline-flex items-center gap-x-2 text-sm  rounded-[55px] bg-blue-600 justify-center">Управление квизами</button>
+  <button class="font-['Comfortaa'] text-5xl mt-[15%] py-3 w-[80%] h-[120px] px-20 inline-flex items-center gap-x-2 text-sm  rounded-[55px] bg-red-500 justify-center">Обзор</button>
   
-
+  <script src="../node_modules/preline/dist/preline.js"></script>
   <script>
     let name_h1 = document.querySelector(".name_h1");
 
