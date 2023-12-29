@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/output.css">
-<style>
+<!-- <style>
     *{
         background-color: #45075c;
     }
@@ -75,7 +75,7 @@
         border-bottom-left-radius: 0;
         width: 50.2%;
     }
-    button {
+    /* button {
         background-color: #e57747;
         height: 150px;
         width: 2000px;
@@ -83,25 +83,25 @@
         border-radius: 20px;
         font-family: 'Comfortaa';
         width: 300px;
-    }
-    .add {
+    } */
+    /* .add {
         margin-right: 5%;
         margin-left: 30%;
         float: left;
         margin-top: 20px;
         margin-left: 17%;
-    }
-    .end {
+    } */
+    /* .end {
         float: left;
         margin-top: 0px;
-    }
+    } */
     .check {
 
     }
-</style>
+</style> -->
 </head>
-<body>
-    <h1>Создание нового теста</h1>
+<body class="flex justify-center items-center flex-col bg-teal-900 h-[2000px]">
+    <h1 class="text-7xl font-bold font-['Comfortaa'] mt-[30%] bg-green-200 py-[5%] rounded-[5px] px-4 w-[80%] items-center justify-center inline-flex">Создание теста</h1>
 
 
 <!--    <h2 id="que">Вопрос</h2>-->
@@ -116,13 +116,14 @@
 <!--    <input type="text">-->
 <!--    <h2 class="qu">Порядковый номер правильного ответа</h2>-->
 <!--    <input type="text" id="last_input">-->
-    <button class="default_q">Вопрос с вариантами ответов</button>
-    <button class="open_q">Открытый вопрос</button>
-    <button class="posled_q">Вопрос на установление последовательностей</button>
-    <br>
-    <button class="add">Добавить вопрос</button>
-    <button class="check">Посмотреть вопросы</button>
-    <button class="end">Закончить и отправить</button>
+    <button type="button" class="font-['Comfortaa'] text-10xl mt-[15%] py-3 w-[80%] h-[120px] px-20 inline-flex items-center gap-x-2 text-5xl  rounded-[55px] bg-teal-500 justify-center">
+    Вопрос с вариантами ответов
+    </button>
+    <button class="open_q font-['Comfortaa'] text-5xl mt-[15%] py-3 w-[80%] h-[120px] px-20 inline-flex items-center gap-x-2  rounded-[55px] bg-teal-500 justify-center">Открытый вопрос</button>
+    <button class="posled_q font-['Comfortaa'] text-5xl mt-[15%] py-3 w-[80%] h-[120px] px-30 inline-flex items-center gap-x-2  rounded-[55px] bg-teal-500 justify-center">Вопрос на установление последовательностей</button>
+    <button class="add font-['Comfortaa'] text-5xl mt-[15%] py-3 w-[80%] h-[120px] px-20 inline-flex items-center gap-x-2 mx-auto rounded-[55px] bg-teal-500 justify-center">Добавить вопрос</button>
+    <button class="check font-['Comfortaa'] text-5xl mt-[15%] py-3 w-[80%] h-[120px] px-20 inline-flex items-center gap-x-2 mx-auto rounded-[55px] bg-teal-500 justify-center">Посмотреть вопросы</button>
+    <button class="end font-['Comfortaa'] text-5xl mt-[15%] py-3 w-[80%] h-[120px] px-20 inline-flex items-center gap-x-2  rounded-[55px] bg-teal-500 justify-center">Закончить и отправить</button>
 
     <script src="../node_modules/preline/dist/preline.js"></script>
     <script>
@@ -148,6 +149,7 @@
             question_h.textContent = "Вопрос";
             let input;
             let h;
+
 
             let right_h = document.createElement("h2");
             right_h.textContent = "Вариант правильного ответа";
